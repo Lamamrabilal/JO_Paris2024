@@ -37,7 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'Jeux_Paris2024'
+    'JO_app',
 ]
 
 MIDDLEWARE = [
@@ -77,11 +77,14 @@ WSGI_APPLICATION = 'Jeux_Paris2024.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'Jeux_Paris_2024',
-        'USER': 'jeux-admin',
+        'NAME': 'jeux_paris_2024',
+        'USER': 'jeux_admin',
         'PASSWORD': 'Boukhalfa_1987',
         'HOST':'localhost',
         'PORT': '5435',
+           'OPTIONS': {
+            'options': '-c search_path=myschema,public'
+        }
     }
 }
 
