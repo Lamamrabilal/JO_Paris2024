@@ -1,5 +1,6 @@
 
 import hashlib
+from pickle import FALSE
 from django.utils import timezone
 import uuid
 import qrcode
@@ -20,15 +21,15 @@ class GestionnaireUtilisateur(BaseUserManager):
         utilisateur.save(using=self._db)
         return utilisateur
 
-    def create_superuser(self, email, nom, prenom, mot_de_passe=None, **extra_fields):
-        extra_fields.setdefault('est_staff', True)
-        extra_fields.setdefault('est_administrateur', True)
 
-        if extra_fields.get('est_staff') is not True:
-            raise ValueError('Le superutilisateur doit avoir est_staff=True.')
-        if extra_fields.get('est_administrateur') is not True:
-            raise ValueError(
-                'Le superutilisateur doit avoir est_administrateur=True.')
+    def create_superuser(self, email, nom, prenom, mot_de_passe=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        if not extra_fields['is_staff']:
+            raise ValueError('Le superutilisateur doit avoir is_staff=True.')
+        if not extra_fields['is_superuser']:
+            raise ValueError('Le superutilisateur doit avoir is_superuser=True.')
 
         return self.create_user(email, nom, prenom, mot_de_passe, **extra_fields)
 
@@ -37,9 +38,9 @@ class Utilisateur(AbstractBaseUser):
     email = models.EmailField(unique=True)
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
-    password = models.CharField(max_length=100, default='')
-    est_actif = models.BooleanField(default=True)
-    est_staff = models.BooleanField(default=False)
+    is_actif = models.BooleanField(default=True)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
     clef_1 = models.UUIDField(default=uuid.uuid4, editable=False)
     created_at = models.DateTimeField(default=timezone.now)
     objects = GestionnaireUtilisateur()
@@ -53,7 +54,7 @@ class Utilisateur(AbstractBaseUser):
     def generer_cle(self):
         self.clef = uuid.uuid4()
         self.save()
-
+  
 
 class OffreDeBillet(models.Model):
     TYPES_CHOICES = [
@@ -98,7 +99,7 @@ class OffreDeBillet(models.Model):
         for _ in range(nombre_utilisateurs_a_ajouter):
             utilisateur = Utilisateur.objects.create(
                 username=f"utilisateur_{Utilisateur.objects.count() + 1}")
-            # Vous devez implémenter votre propre logique pour associer l'utilisateur à l'offre
+
 
     def __str__(self):
         return f"{self.type}"
