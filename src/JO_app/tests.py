@@ -1,21 +1,17 @@
 from django.test import TestCase
 from .models import Utilisateur, OffreDeBillet, Reservation, Ticket
 from django.contrib.auth import get_user_model
-
-import unittest
-
 from django.contrib.auth.models import User
 
 
 class UtilisateurTestCase(TestCase):
     def test_creation_utilisateur(self):
-        # Données de test
+       
         email = "test@example.com"
         nom = "Doe"
         prenom = "John"
         mot_de_passe = "testpassword"
 
-        # Création de l'utilisateur
         utilisateur = Utilisateur.objects.create_user(
             email=email,
             nom=nom,
@@ -23,7 +19,7 @@ class UtilisateurTestCase(TestCase):
             mot_de_passe=mot_de_passe
         )
 
-        # Vérifications
+      
         self.assertEqual(utilisateur.email, email)
         self.assertEqual(utilisateur.nom, nom)
         self.assertEqual(utilisateur.prenom, prenom)
@@ -33,14 +29,14 @@ class UtilisateurTestCase(TestCase):
         self.assertTrue(Utilisateur.objects.filter(email=email).exists())
 
     def test_create_superuser(self):
-        # Données de test
+       
         email = "admin@example.com"
         nom = "Admin"
         prenom = "User"
         mot_de_passe = "password"
         extra_fields = {}
 
-        # Appel de la fonction à tester
+        
         superuser = Utilisateur.objects.create_superuser(
             email=email,
             nom=nom,
@@ -49,7 +45,6 @@ class UtilisateurTestCase(TestCase):
             **extra_fields
         )
 
-        # Assertions
         self.assertEqual(superuser.email, email)
         self.assertEqual(superuser.nom, nom)
         self.assertEqual(superuser.prenom, prenom)
