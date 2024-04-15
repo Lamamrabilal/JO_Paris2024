@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Jeux Olympique Paris 2024{% endblock %}</title>
+</head>
+<body>
+
+<header>
+    <!-- Barre de navigation -->
+    <nav>
+        <ul>
+            <li><a href="/">Accueil</a></li>
+            <li><a href="/offres/">Offres de Billets</a></li>
+            <li><a href="/reservation/">Mes Réservations</a></li>
+            {% if user.is_authenticated %}
+                <li><a href="/logout/">Déconnexion</a></li>
+            {% else %}
+                <li><a href="/login/">Connexion</a></li>
+                <li><a href="/signup/">Inscription</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+</header>
+
+<main>
+   
+    {% block content %}
+    {% endblock %}
+</main>
+
+<footer>
+   
+    <p>&copy; 2024 Votre Société. Tous droits réservés.</p>
+</footer>
+
+</body>
+</html>
+
