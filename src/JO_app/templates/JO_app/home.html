@@ -1,8 +1,43 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block title %}Page Principale{% endblock %}
 
 {% block content %}
-<h1>Bienvenue sur la Page Principale !</h1>
-<!-- Vous pouvez insérer ici le contenu spécifique de la page principale -->
+<main class="content-container">
+    <div class="background-image">
+        <img class="palais" src="{% static 'images/Grand-Palais.png' %}" alt="Grand Palais" width="100%">
+        <h1 class="content-title">Bienvenue sur les Jeux Olympiques Paris 2024 !</h1>
+    </div>
+
+    <div class="content-overlay">
+        <!-- Contenu principal -->
+        <section class="hero">
+            <div class="hero-content">
+                <h1>Achetez vos billets sur le site des Jeux Olympiques Paris 2024</h1>
+                <p>Assistez aux plus grands moments de l'histoire sportive !</p>
+                <a href="/offres/" class="btn btn-primary">Voir les offres de billets</a>
+            </div>
+        </section>
+    </div>
+        <!-- Titre des cartes des sports -->
+        <h2 class="section-title">Découvrez nos sports</h2> 
+    <!-- Cartes des sports -->
+    <section class="sports-cards">
+        <div class="container">
+            <div class="row justify-content-center "> <!-- Alignement horizontal -->
+                {% for sport in sports %}
+                <div class="col-lg-3 mb-4">
+                    <div class="card">
+                        <img src="{% static sport.image %}" class="card-img-top" alt="{{ sport.name }}">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ sport.name }}</h5>
+                            <p class="card-text">{{ sport.description }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+</main>
 {% endblock %}
