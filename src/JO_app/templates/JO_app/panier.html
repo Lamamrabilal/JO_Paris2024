@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-panier">
+    {% if user.is_authenticated %}
+        <p>Connecté en tant que {{ user.nom }}</p>
+        <!-- Vous pouvez également ajouter une icône ici -->
+    {% endif %}
+    
+    <h2 class="panier-heading">Panier</h2>
+    {% if offres_du_panier %}
+        <ul class="list-group">
+            {% for offre in offres_du_panier %}
+                <li class="list-group-item">
+                    <!-- Ajouter la miniature de l'image du sport -->
+                    <img src="{% static offre.sport.image %}" alt="{{ offre.sport.name }}" style="max-width: 100px; max-height: 100px; float: left; margin-right: 10px;">
+                    <div>
+                        <strong>{{ offre.type }}</strong><br>
+                        {{ offre.description }}<br>
+                        <strong>Prix: {{ offre.prix }}</strong>
+                        <form action="{% url 'JO_app:supprimer_panier' offre_id=offre.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn-supprimer-du-panier" type="submit">Supprimer</button>
+                        </form>
+                    </div>
+                    <div style="clear: both;"></div>
+                </li>
+            {% endfor %}
+        </ul>
+        <!-- Synthèse de commande -->
+        <div class="summary">
+            <p>Total articles: {{ offres_du_panier|length }}</p>
+            <p>Total à payer: {{ total_prix }}</p>
+        </div>
+        <!-- Options de paiement -->
+        <div class="payment-options">
+            <h3>Choisissez votre moyen de paiement:</h3>
+            <img src="{% static 'visa.png' %}" alt="Visa">
+            <img src="{% static 'mastercard.png' %}" alt="Mastercard">
+            <img src="{% static 'paypal.png' %}" alt="PayPal">
+            <!-- Ajoutez d'autres logos ou icônes pour d'autres moyens de paiement -->
+        </div>
+        <!-- Formulaire de paiement -->
+        <form id="payment-form" action="{% url 'JO_app:paiement' %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-primary" type="submit">COMMANDER</button>
+        </form>
+    {% else %}
+        <p>Votre panier est vide.</p>
+    {% endif %}
+
+    <!-- Message demandant l'authentification avant le paiement -->
+    <div id="auth-message" style="display: none; color: red;">
+        Vous devez être connecté pour procéder au paiement. <a href="{% url 'JO_app:connexion' %}?next={% url 'JO_app:paiement' %}">Se connecter</a>
+    </div>
+</div>
+
+<!-- Styles CSS -->
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f8f9fa;
+    }
+    .container-panier {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        background-color: #fff;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    .summary {
+        margin-top: 20px;
+    }
+    .payment-options {
+        margin-top: 20px;
+    }
+    .payment-options img {
+        width: 50px; /* Ajustez la taille des images selon vos besoins */
+        margin-right: 10px;
+    }
+</style>
+
+<!-- JavaScript pour gérer le paiement -->
+<script>
+    document.getElementById('payment-form').addEventListener('submit', function(event) {
+        // Vérifier si l'utilisateur est authentifié
+        var isAuthenticated = "{{ user.is_authenticated }}";
+        if (isAuthenticated !== "True") {
+            // Si l'utilisateur n'est pas authentifié, empêcher la soumission du formulaire
+            event.preventDefault();
+            // Afficher le message demandant l'authentification
+            document.getElementById('auth-message').style.display = 'block';
+        }
+    });
+</script>
+{% endblock %}
