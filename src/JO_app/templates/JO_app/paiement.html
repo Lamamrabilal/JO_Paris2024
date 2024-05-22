@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paiement du Panier</title>
+</head>
+<body>
+    <h1>Paiement du Panier</h1>
+    <form action="JO_app:paiement" method="post">
+        {% csrf_token %}
+        <button type="submit">Procéder au paiement</button>
+    </form>
+    <a href="{% url 'JO_app:panier' %}">Retour au panier</a>
+</body>
+</html>
