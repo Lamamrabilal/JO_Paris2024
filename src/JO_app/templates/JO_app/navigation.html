@@ -1,0 +1,64 @@
+{%load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Jeux {% endblock %}</title>
+
+    {% load static %}
+    <link href="{% static 'styles.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet">
+</head>
+<body>
+
+ <div class="logo-container">
+        <!-- Logo des Jeux Olympiques Paris 2024 -->
+        <a href="{%url 'JO_app:home'%}"> <img src="{% static 'images/paris_2024.png' %}" alt="Logo Jeux Olympiques Paris 2024" ></a>
+    </div>
+   
+   <!-- Barre de navigation -->
+<nav>
+    <!-- Bouton du menu hamburger -->
+    <div class="menu-toggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
+    </div>
+    <ul class="nav-links">
+        <li><a href="{%url 'JO_app:home'%}">Accueil</a></li>
+       
+        <li><a href="{% url 'JO_app:reservation'%}">Mes Réservations</a></li>
+        
+    </ul>
+
+    <!-- Bouton Inscription/Connexion -->
+    <div class="auth-buttons">
+    {% if user.is_authenticated %}
+        <span class="auth-text">{{ user.nom }} {{ user.prenom }}</span>
+        <a href="{% url 'JO_app:compte_utilisateur'%}" class="auth-icon"><i class="fas fa-user-circle"></i></a>
+        <a href="{% url 'JO_app:deconnexion'%}" class="auth-button">Déconnexion</a>
+        
+    {% else %}
+        <a href="{% url 'JO_app:connexion'%}" class="auth-button">Connexion</a>
+        <a href="{% url 'JO_app:inscription'%}" class="auth-button">Inscription</a>
+    {% endif %}
+</div>
+
+    <!-- Icône de panier -->
+    <div class="cart">
+        <a href="{% url 'JO_app:panier' %}">
+            <i class="fas fa-shopping-cart"></i>
+            <span class="cart-count">0</span>
+        </a>
+    </div>
+</nav>
+
+
+ <script src="{% static 'script.js' %}"></script>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+</html>
