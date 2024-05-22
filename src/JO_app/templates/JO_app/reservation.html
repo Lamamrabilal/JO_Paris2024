@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Page Principale{% endblock %}
+
+{% block content %}
+    <div class="container">
+        <h1 class="mt-5 pt-4">Mes réservations</h1>
+        <div class="row" >
+            {% for reservation in reservations %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Réservation ID: {{ reservation.id }}</h5>
+                            <p class="card-text"><strong>Utilisateur:</strong> {{ reservation.utilisateur }}</p>
+                            <p class="card-text"><strong>Offres:</strong> {{ reservation.offre_de_billets }}</p>
+                            <p class="card-text"><strong>Date de réservation:</strong> {{ reservation.date_reservation }}</p>
+                            
+                            {% if reservation.ticket %}
+                                <a href="{% url 'JO_app:ticket' reservation_id=reservation.id %}" class="btn btn-success">Télécharger le billet</a>
+                            {% else %}
+                                <p class="text-danger">Billet non disponible</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="col-12">
+                    <div class="alert alert-info" role="alert">
+                        Aucune réservation trouvée.
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
