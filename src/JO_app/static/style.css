@@ -1,0 +1,588 @@
+/* Styles pour la mise en page générale */
+body {
+  font-family: 'Playfair Display', serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+/* Style pour le conteneur de l'image et du titre */
+.background-image {
+    position: relative;
+    text-align: center;
+}
+
+/* Style pour l'image */
+.palais {
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    display: block;
+}
+
+/* Style pour le titre */
+.content-title {
+    width: 100%;
+    margin-top: 20px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 6vw;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+/* Média requête pour des écrans plus petits */
+@media screen and (max-width: 768px) {
+    .content-title {
+        font-size: 8vw;
+    }
+}
+
+/* Styles pour le header */
+header {
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content:space-around;
+    align-items: center;
+    
+    z-index: 1;
+}
+
+
+
+.logo-container {
+    
+    display: block;
+    margin:0 ;
+    
+   
+}
+
+/* Style pour le logo lui-même */
+.logo-container img {
+    width: 110px; /* Largeur du logo */
+    
+  
+}
+/* Style pour la barre de navigation */
+nav {
+    display: flex;
+    align-items: center;
+}
+
+/* Style pour les liens de navigation */
+.nav-links {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-links li {
+    margin-right: 20px; /* Espace entre les éléments de la barre de navigation */
+}
+
+.nav-links li a {
+    position: relative; /* Ajoutez cette ligne pour positionner le pseudo-élément correctement */
+    text-decoration: none;
+    color: #333; /* Couleur des liens */
+    font-weight: bold;
+}
+
+.nav-links li a::after {
+    content: '';
+    position: absolute;
+    bottom: -3px; /* Ajustez selon votre préférence */
+    left: 0;
+    width: 0;
+    height: 2px; /* Épaisseur du trait */
+    background-color: #490085;
+; /* Couleur du trait */
+    transition: width 0.5s ease; /* Animation de la largeur du trait */
+}
+
+.nav-links li a:hover::after {
+    width: 100%; /* La largeur du trait au survol */
+}
+
+/* Ajoutez une transition pour la couleur du texte au survol */
+.nav-links li a:hover {
+    color: rgb(0, 0, 0); /* Couleur des liens */
+    transition: color 0.3s ease; /* Transition de la couleur du texte */
+}
+
+
+/* Style pour le panier */
+.cart {
+    margin-left: auto; /* Pour pousser l'icône de panier à droite */
+    position: relative; /* Position relative pour les éléments enfants */
+}
+
+.cart a {
+    text-decoration: none; /* Supprimer la décoration du lien */
+    color: #333; /* Couleur du texte du panier */
+    display: flex; /* Utilisation de flexbox pour aligner les éléments horizontalement */
+    align-items: center; /* Aligner les éléments verticalement */
+    font-weight: bold; /* Texte en gras */
+    margin-left: 12px;
+}
+
+.cart i {
+    font-size: 24px; /* Taille de l'icône */
+    color: #333; /* Couleur de l'icône */
+    margin-right: 5px; /* Espace entre l'icône et le texte */
+}
+
+.cart-count {
+    background-color: #FF5733; /* Couleur de fond du compteur de panier */
+    color: #fff; /* Couleur du texte du compteur de panier */
+    border-radius: 50%; /* Bordure arrondie pour le compteur de panier */
+    width: 20px; /* Largeur du compteur de panier */
+    height: 20px; /* Hauteur du compteur de panier */
+    font-size: 12px; /* Taille de la police du compteur de panier */
+    display: flex; /* Utilisation de flexbox pour aligner le texte au centre */
+    justify-content: center; /* Aligner le texte horizontalement au centre */
+    align-items: center; /* Aligner le texte verticalement au centre */
+    position: absolute; /* Position absolue pour placer le compteur de panier */
+    top: -8px; /* Décalage vers le haut pour ajuster la position du compteur de panier */
+    right: -8px; /* Décalage vers la droite pour ajuster la position du compteur de panier */
+}
+
+
+/* Style pour les boutons d'inscription/connexion */
+.auth-button {
+    text-decoration: none;
+    color: #333; /* Couleur du texte des boutons */
+    padding: 4px 15px;
+    border: 2px solid #333; /* Bordure des boutons */
+    border-radius: 5px; /* Pour arrondir les coins des boutons */
+    margin-left: 12px;
+}
+
+.auth-button:hover {
+     background-color: #490085;
+     /* Couleur de fond des boutons au survol */
+    color: #fff; /* Couleur du texte des boutons au survol */
+     text-decoration: none;
+}
+
+/* Media query pour le menu hamburger sur les écrans de petite taille */
+@media screen and (max-width: 768px) {
+    .nav-links {
+        display: none; /* Cacher les liens de navigation par défaut */
+        flex-direction: column; /* Aligner les liens de navigation verticalement */
+        position: absolute; /* Position absolue pour empêcher les éléments de pousser le contenu */
+        top: 100%; /* Positionner les liens en dessous de la barre de navigation */
+        left: 0; /* Aligner les liens sur la gauche */
+        background-color: #fff; /* Couleur de fond des liens de navigation */
+        padding: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Ombre pour les liens de navigation */
+        
+    }
+
+    .nav-links li {
+        margin-bottom: 10px; /* Espace entre les éléments de la barre de navigation sur les petits écrans */
+    }
+
+    /* Afficher le bouton du menu hamburger */
+    .menu-toggle {
+        display: block;
+        cursor: pointer; /* Définir le curseur sur pointer pour indiquer que le bouton est cliquable */
+    }
+
+    /* Style pour le bouton du menu hamburger */
+    .menu-toggle .bar {
+        width: 25px;
+        height: 3px;
+        background-color: #333; /* Couleur des barres du menu hamburger */
+        margin: 5px 0; /* Espace entre les barres du menu hamburger */
+    }
+}
+
+/* Style sophistiqué pour le contenu principal */
+.content-overlay {
+    display: block;
+    position: relative;
+     background-color: #490085;
+    
+    background-size: cover; /* Assurez-vous que l'image de fond couvre toute la zone */
+    background-position: center; /* Centrez l'image de fond */
+    color:white; /* Couleur du texte */
+    padding: 50px; /* Espacement intérieur */
+    margin:0px auto;
+    width: 100%;
+    
+    text-align: center; /* Centrage du texte */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombre */
+}
+
+
+
+/* Style pour le titre */
+.hero-content h1 {
+  
+
+    font-size: 36px; /* Taille de la police */
+    font-weight: bold; /* Gras */
+    margin-bottom: 20px; /* Espacement bas */
+}
+
+/* Style pour le paragraphe */
+.hero-content p {
+    font-size: 18px; /* Taille de la police */
+    margin-bottom: 20px; /* Espacement bas */
+}
+
+/* Style pour le bouton */
+.hero-content .btn {
+    display: inline-block; /* Permet au bouton d'être sur la même ligne */
+    padding: 10px 20px; /* Espacement à l'intérieur du bouton */
+    font-size: 16px; /* Taille de la police */
+    background-color: #ffffff; /* Couleur de fond */
+    color:#333; /* Couleur du texte */
+    border: 2px solid #ffffff; /* Bordure */
+    border-radius: 25px; /* Bordure arrondie */
+    text-decoration: none; /* Supprimer le soulignement par défaut */
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Transition fluide lors du survol */
+}
+
+/* Style pour le survol du bouton */
+.hero-content .btn:hover {
+    background-color: #333; /* Couleur de fond au survol */
+    color: #ffffff; /* Couleur du texte au survol */
+    border-color: #ffffff; /* Couleur de la bordure au survol */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Ombre au survol */
+    text-decoration: none; /* Supprimer le soulignement par défaut */
+}
+
+/* Style pour le titre des cartes des sports */
+.section-title {
+    text-align: center; /* Centrer horizontalement le titre */
+    margin-top: 60px; /* Espacement bas */
+    font-size: 36px; /* Taille de la police */
+    color: #333; /* Couleur du texte */
+}
+
+
+/* Style sophistiqué pour les cartes des sports */
+.sports-cards {
+    padding: 50px 0; /* Espacement intérieur */
+}
+
+/* Style pour chaque carte */
+.sports-cards .card {
+    border: none; /* Supprimer la bordure par défaut */
+    border-radius: 15px; /* Bordure arrondie */
+    overflow: hidden; /* Masquer tout contenu débordant */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre */
+    transition: box-shadow 0.3s; /* Transition fluide */
+}
+
+/* Style pour l'image de la carte */
+.sports-cards .card-img-top {
+    border-top-left-radius: 15px; /* Arrondir le coin supérieur gauche */
+    border-top-right-radius: 15px; /* Arrondir le coin supérieur droit */
+    height: 200px; /* Hauteur de l'image */
+    object-fit: cover; /* Ajuster la taille de l'image */
+}
+
+/* Style pour le titre de la carte */
+.sports-cards .card-title {
+    font-weight: bold; /* Gras */
+    margin-bottom: 10px; /* Espacement bas */
+}
+
+/* Style pour le texte de la carte */
+.sports-cards .card-text {
+    color: #555; /* Couleur du texte */
+}
+
+/* Style pour le survol de la carte */
+.sports-cards .card:hover {
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre au survol */
+}
+
+
+/* Ajout de style pour les cartes */
+.card {
+   margin-top: 60px;
+    border: 1px solid #ddd; /* Ajoute une bordure grise autour des cartes */
+    border-radius: 8px; /* Arrondit les coins des cartes */
+}
+
+.card:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère lorsqu'on survole les cartes */
+}
+
+.card-title {
+    font-size: 1.2rem; /* Taille de police plus grande pour les titres de carte */
+    margin-bottom: 0.5rem; /* Ajoute un petit espace en bas des titres */
+}
+
+.card-text {
+    color: #555; /* Couleur de texte légèrement grisé */
+}
+
+.card-img-top {
+    border-top-left-radius: 8px; /* Arrondit uniquement le coin supérieur gauche de l'image */
+    border-top-right-radius: 8px; /* Arrondit uniquement le coin supérieur droit de l'image */
+    max-height: 200px; /* Limite la hauteur maximale de l'image */
+    object-fit: cover; /* Ajuste la taille de l'image pour couvrir complètement la zone définie */
+}
+
+
+/* Style des cartes des sites */
+.card-site {
+
+    border: 1px solid #ddd; /* Bordure grise */
+    border-radius: 8px; /* Coins arrondis */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    height: 400px;
+}
+
+/* Style des images des sites */
+.card-site img {
+    border-top-left-radius: 8px; /* Coins arrondis en haut à gauche */
+    border-top-right-radius: 8px; /* Coins arrondis en haut à droite */
+    max-width: 100%; /* Image s'adapte à la largeur de la carte */
+    
+}
+
+/* Style du titre des sites */
+.card-site .card-title {
+    font-size: 1.2rem; /* Taille de police */
+    font-weight: bold; /* Gras */
+    margin-bottom: 0.5rem; /* Marge inférieure */
+    
+}
+
+/* Style de la localisation des sites */
+.card-site .card-location {
+    color: rgb(159, 5, 5); /* Couleur de texte grise */
+    font-size: 0.9rem; /* Taille de police plus petite */
+}
+
+footer {
+    background-color: #0e0e0e;
+    padding:0;
+    height: 280px;
+    border-top: 1px solid #e7e7e7;
+    color: rgb(255, 255, 255);
+}
+
+.footer-link {
+    margin-right: 15px;
+    color: #ffffff;
+    text-decoration: none;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+}
+
+.footer-logo {
+    height: 60px;
+    margin-left: 15px;
+    vertical-align: middle;
+}
+
+.social-links {
+    display: inline-block;
+    margin-left: 15px;
+}
+
+.social-link {
+    margin-right: 10px;
+    color: #ffffff;
+    text-decoration: none;
+    font-size: 20px;
+}
+
+.social-link:hover {
+    color: #007bff;
+}
+
+.container-fluid {
+    max-width: 1200px;
+    margin: auto;
+}
+
+@media (max-width: 768px) {
+    .text-end {
+        text-align: center !important;
+    }
+    
+    .social-links {
+        margin-top: 10px;
+    }
+}
+
+
+
+
+
+
+
+
+
+/* reservation.css */
+
+
+h1, h2 {
+    
+    text-align: center; /* Centrer le texte */
+    
+   
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    margin-left: auto; /* Auto-marge pour centrer horizontalement */
+    margin-right: auto; /* Auto-marge pour centrer horizontalement */
+}
+
+td, th {
+    padding: 8px;
+    border-bottom: 1px solid #ddd;
+    text-align: left; /* Aligner le texte à gauche */
+}
+
+td:first-child {
+    width: 30%;
+    font-weight: bold;
+}
+
+.ticket-info {
+    background-color: #f9f9f9;
+}
+
+.tickets-info table {
+    margin-top: 20px;
+}
+
+/* Style spécifique pour les Jeux Olympiques de Paris 2024 */
+.paris2024 {
+    color: #0055A4; /* Bleu officiel de Paris 2024 */
+    font-weight: bold;
+}
+
+.container-panier{
+    width: 100%;
+    height: 100%;
+    
+    margin: 150px auto;
+
+}
+
+.panier-heading {
+    color: #2e0b72;
+    margin-top: 0;
+}
+.offres-list {
+    list-style-type: none;
+    padding: 0;
+}
+.offre-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 0;
+    border-bottom: 1px solid #ddd;
+}
+.offre-info {
+    flex: 1;
+}
+.offre-info h3 {
+    margin-top: 0;
+    margin-bottom: 5px;
+    font-size: 20px;
+    color: #333;
+}
+.offre-info p {
+    margin: 0;
+    color: rgb(128, 0, 0);
+}
+.offre-prix {
+    font-size: 20px;
+    color: #007bff;
+}
+.supprimer-offre {
+    background-color: #dc3545;
+    color: #fff;
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.supprimer-offre:hover {
+    background-color: #c82333;
+}
+#payment-button {
+    background-color: #007bff;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 20px;
+}
+#payment-button:hover {
+    background-color: #0056b3;
+}
+#auth-message a {
+    color: #007bff;
+    text-decoration: none;
+}
+#auth-message a:hover {
+    text-decoration: underline;
+}
+
+        /* Intégration des styles CSS */
+        .reservation-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 250px auto; /* Réduit la marge pour centrer la table */
+        }
+
+        .reservation-table th, .reservation-table td {
+            border: 1px solid #ddd;
+            padding: 12px; /* Augmente la taille du padding pour plus d'espace */
+            text-align: center; /* Centre le texte */
+        }
+
+        .reservation-table th {
+            background-color: #007bff; /* Change la couleur de fond de l'en-tête */
+            color: #fff; /* Change la couleur du texte de l'en-tête */
+        }
+
+        .reservation-table tr:hover {
+            background-color: #f2f2f2;
+        }
+
+      /* Boutons */
+.btn {
+    display: inline-block;
+    padding: 10px 16px; /* Taille du padding pour les boutons */
+    text-align: center;
+    text-decoration: none;
+    color: #5228a7; /* Couleur du texte */
+    margin-left: 35px;
+    background-color: #fff; /* Couleur de fond */
+    border: none;
+    border-radius: 4px; /* Coins arrondis */
+    cursor: pointer; /* Curseur pointeur */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Transition pour une animation fluide */
+}
+
+.btn:hover {
+    background-color: #5228a7; /* Couleur de fond au survol */
+    color: #ffffff; /* Change la couleur du texte au survol */
+}
