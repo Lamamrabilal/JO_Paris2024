@@ -3,11 +3,14 @@ import hashlib
 from pickle import FALSE
 from django.utils import timezone
 import uuid
-import qrcode
+from django.db.models import Sum
+
+
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from io import BytesIO
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, AbstractUser
 from django.db import models
+import qrcode 
 
 
 class GestionnaireUtilisateur(BaseUserManager):
@@ -35,9 +38,10 @@ class GestionnaireUtilisateur(BaseUserManager):
 
 
 class Utilisateur(AbstractBaseUser):
-    email = models.EmailField(unique=True)
     nom = models.CharField(max_length=100)
     prenom = models.CharField(max_length=100)
+    email = models.EmailField(unique=True)
+    
     is_actif = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
     is_superuser = models.BooleanField(default=False)
@@ -56,6 +60,22 @@ class Utilisateur(AbstractBaseUser):
         self.save()
   
 
+class Sport(models.Model):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='images/sports/')
+    description = models.TextField()
+
+    def __str__(self):
+        return self.name
+
+class Site(models.Model):
+    name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='images/sites_olympique/')
+    location = models.CharField(max_length=255)
+
+    def __str__(self):
+        return self.name
+
 class OffreDeBillet(models.Model):
     TYPES_CHOICES = [
         ('Solo', 'Solo'),
@@ -66,10 +86,12 @@ class OffreDeBillet(models.Model):
     description = models.TextField()
     prix = models.DecimalField(max_digits=10, decimal_places=2)
     nombre_ventes = models.IntegerField(default=0)
+    sport = models.ForeignKey(Sport, on_delete=models.CASCADE, related_name='offres', null=True, blank=True)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='offres', null=True, blank=True)
 
     @classmethod
-    def creer_offre(cls, type, description, prix):
-        return cls.objects.create(type=type, description=description, prix=prix)
+    def creer_offre(cls, type, description, prix, sport, site=None):
+        return cls.objects.create(type=type, description=description, prix=prix, sport=sport, site=site)
 
     def modifier_offre(self, offre_id, **kwargs):
         offre = self.objects.get(pk=offre_id)
@@ -100,17 +122,17 @@ class OffreDeBillet(models.Model):
             utilisateur = Utilisateur.objects.create(
                 username=f"utilisateur_{Utilisateur.objects.count() + 1}")
 
-
     def __str__(self):
-        return f"{self.type}"
+        return f"{self.type} - {self.sport.name}" if self.sport else f"{self.type}"
 
-
+    
 class Reservation(models.Model):
     utilisateur = models.ForeignKey(Utilisateur, on_delete=models.CASCADE)
     offre_de_billets = models.ForeignKey(
         OffreDeBillet, on_delete=models.CASCADE)
     date_reservation = models.DateTimeField(auto_now_add=True)
     clef_2 = models.UUIDField(default=uuid.uuid4, editable=False)
+    ticket = models.OneToOneField('Ticket', on_delete=models.CASCADE, related_name='reservation_ticket', null=True, blank=True)
 
     def __str__(self):
         return f"{self.utilisateur}"
@@ -119,9 +141,19 @@ class Reservation(models.Model):
         self.clef = uuid.uuid4()
         self.save()
 
+    def get_ticket_qr_code_url(self):
+        # sourcery skip: assign-if-exp, reintroduce-else
+       
+        
+        if self.ticket:
+            return self.ticket.qr_code.url
+        return None
+
+
 
 class Ticket(models.Model):
-    reservation = models.ForeignKey(Reservation, on_delete=models.CASCADE)
+    reservation = models.OneToOneField('Reservation', on_delete=models.CASCADE, related_name='ticket_reservation')
+
     offre_de_billets = models.ForeignKey(
         OffreDeBillet, on_delete=models.CASCADE)
     clef_finale = models.CharField(
