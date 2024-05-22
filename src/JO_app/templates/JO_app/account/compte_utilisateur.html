@@ -1,0 +1,40 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connexion - Jeux Olympiques Paris 2024</title>
+    <link href="{% static 'profil.css' %}" rel="stylesheet">
+    <link href="{% static 'fontawesome/css/all.min.css' %}" rel="stylesheet">
+    <style>
+        
+    </style>
+</head>
+<body>
+
+<div class="logo-container">
+    <!-- Logo des Jeux Olympiques Paris 2024 -->
+    <img src="{% static 'images/paris_2024.png' %}" alt="Logo Jeux Olympiques Paris 2024" width='180px'>
+</div>
+
+<div class="container">
+    <h1>Modifier le profil</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Enregistrer les modifications</button>
+</form>
+    </div>
+</div>
+</body>
+</html>
+
+
+
+
+
+
+
+
