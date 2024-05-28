@@ -15,7 +15,7 @@
 <body>
 <div class="logo-container">
     <!-- Logo des Jeux Olympiques Paris 2024 -->
-    <img src="{% static 'images/paris_2024.png' %}" alt="Logo Jeux Olympiques Paris 2024" width='180px'>
+    <a href="{%url 'JO_app:home'%}"><img src="{% static 'images/paris_2024.png' %}" alt="Logo Jeux Olympiques Paris 2024" width='180px'></a>
 </div>
 
 <div class="container">
@@ -37,7 +37,7 @@
                         </div>
                         <div class="card-footer text-center">
                             <div class="small">
-                                <a href="{% url 'JO_app:connexion' %}">Have an account? Go to Sign in</a>
+                                <a href="{% url 'JO_app:connexion' %}">vous avez un compte? connectez-vous.</a>
                             </div>
                         </div>
                     </div>

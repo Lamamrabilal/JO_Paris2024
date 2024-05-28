@@ -42,9 +42,39 @@
         </div>
         <!-- Formulaire de paiement -->
         <form id="payment-form" action="{% url 'JO_app:paiement' %}" method="post">
-            {% csrf_token %}
-            <button class="btn btn-primary" type="submit">COMMANDER</button>
-        </form>
+    {% csrf_token %}
+    {% for offre in offres_du_panier %}
+        {% if offre.type == 'Duo' %}
+            <div class="form-group">
+                <label>Nom utilisateur 1:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 1">
+            </div>
+            <div class="form-group">
+                <label>Nom utilisateur 2:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 2">
+            </div>
+        {% elif offre.type == 'Familiale' %}
+            <div class="form-group">
+                <label>Nom utilisateur 1:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 1">
+            </div>
+            <div class="form-group">
+                <label>Nom utilisateur 2:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 2">
+            </div>
+            <div class="form-group">
+                <label>Nom utilisateur 3:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 3">
+            </div>
+            <div class="form-group">
+                <label>Nom utilisateur 4:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 4">
+            </div>
+        {% endif %}
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">COMMANDER</button>
+</form>
+
     {% else %}
         <p>Votre panier est vide.</p>
     {% endif %}
@@ -55,33 +85,7 @@
     </div>
 </div>
 
-<!-- Styles CSS -->
-<style>
-    body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
-        background-color: #f8f9fa;
-    }
-    .container-panier {
-        max-width: 800px;
-        margin: auto;
-        padding: 20px;
-        background-color: #fff;
-        border-radius: 8px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    }
-    .summary {
-        margin-top: 20px;
-    }
-    .payment-options {
-        margin-top: 20px;
-    }
-    .payment-options img {
-        width: 50px; /* Ajustez la taille des images selon vos besoins */
-        margin-right: 10px;
-    }
-</style>
+
 
 <!-- JavaScript pour gérer le paiement -->
 <script>

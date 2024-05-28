@@ -1,9 +1,5 @@
 
 
-
-
-
-
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
@@ -156,7 +152,7 @@ class HomePageView(TemplateView):
 
 class ListeOffresView(ListView):
     model = OffreDeBillet
-    template_name = 'JO_app/listes_offres.html'
+    
     context_object_name = 'offres'
 
     def get_context_data(self, **kwargs):
@@ -177,12 +173,13 @@ class PanierView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         panier_ids = self.request.session.get('panier', [])
-
-        # Débogage : Imprimer les IDs des offres dans le panier
-        print(f"IDs dans le panier : {panier_ids}")
-
         offres_du_panier = OffreDeBillet.objects.filter(pk__in=panier_ids)
+        
+        # Calculer le montant total du panier
+        total_prix = sum(offre.prix for offre in offres_du_panier)
+
         context['offres_du_panier'] = offres_du_panier
+        context['total_prix'] = total_prix  # Ajouter le montant total au contexte
         return context
 
     def post(self, request, *args, **kwargs):
@@ -209,10 +206,10 @@ class AjouterAuPanierView(View):
     def get(self, request, offre_id):
         return redirect('JO_app:panier')
 
-
         
 class SupprimerDuPanierView(View):
     def post(self, request, offre_id):
+        
         panier = request.session.get('panier', [])
         if offre_id in panier:
             panier.remove(offre_id)
@@ -221,6 +218,8 @@ class SupprimerDuPanierView(View):
         else:
             messages.error(request, 'Cette offre n\'est pas dans votre panier.')
         return redirect('JO_app:panier')  
+
+
 
 class PayerPanierView(View):
     def post(self, request):
@@ -232,16 +231,6 @@ class PayerPanierView(View):
             messages.error(request, 'Échec du paiement. Veuillez réessayer plus tard.')
         return redirect('JO_app:panier')
 
-    def calculer_total_panier(self, request):
-        panier = request.session.get('panier')
-        total_prix = 0
-        if panier:
-            for offre_id in panier:
-                offre = OffreDeBillet.objects.get(id=offre_id)
-                total_prix += offre.prix
-        return total_prix
-
-
     def simuler_paiement(self):
         return random.random() < 0.8  # Simule un paiement réussi avec 80% de probabilité
 
@@ -251,6 +240,14 @@ class PayerPanierView(View):
             for offre_id in panier:
                 offre = OffreDeBillet.objects.get(id=offre_id)
                 reservation = Reservation.objects.create(utilisateur=request.user, offre_de_billets=offre)
+
+                # Ajouter les noms des utilisateurs en fonction du type d'offre
+                noms_utilisateurs = request.POST.getlist('noms_utilisateurs')
+                reservation.noms_utilisateurs = noms_utilisateurs
+                reservation.save()
+
+                # Effectuer la vente
+                offre.effectuer_vente()
 
                 # Génération du billet
                 ticket = Ticket.objects.create(reservation=reservation, offre_de_billets=offre)
@@ -289,7 +286,6 @@ class PayerPanierView(View):
             print(f"Erreur lors de l'envoi de l'email: {e}")
 
 
-
 def inscription(request):
     if request.method == 'POST':
         form = UtilisateurCreationForm(request.POST)
@@ -305,15 +301,14 @@ def connexion(request):
         form = UtilisateurLoginForm(data=request.POST)
         
         if form.is_valid():
-            
             email = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(email=email, password=password)
-            print(user)
+            print("User:", user)  # Ajoutez cette ligne pour afficher l'utilisateur authentifié
             if user is not None:
                 login(request, user)
-                
-                return redirect('JO_app:home')  # Rediriger vers la page d'accueil après la connexion
+                print("User is authenticated:", request.user.is_authenticated)  # Ajoutez cette ligne pour vérifier si l'utilisateur est authentifié
+                return redirect('JO_app:home')
     else:
         form = UtilisateurLoginForm()
     return render(request, 'JO_app/account/connexion.html', {'form': form})
@@ -341,45 +336,25 @@ def profile(request):
 
 
 class ReservationView(LoginRequiredMixin, View):
-    
+    login_url = 'JO_app:connexion'
+
     def get(self, request):
-        # Récupérer toutes les réservations de l'utilisateur actuel
         reservations = Reservation.objects.filter(utilisateur=request.user)
-        form = ReservationForm()  # Instanciez le formulaire ReservationForm
+        form = ReservationForm()
         return render(request, 'JO_app/reservation.html', {'form': form, 'reservations': reservations})
 
     def post(self, request):
-        form = ReservationForm(request.POST)  # Récupérez les données du formulaire POST
-        if form.is_valid():  # Vérifiez si le formulaire est valide
+        form = ReservationForm(request.POST)
+        if form.is_valid():
             reservation = form.save(commit=False)
             reservation.utilisateur = request.user
             reservation.save()
-            
+
             ticket = Ticket.objects.create(reservation=reservation, offre_de_billets=reservation.offre_de_billets)
             reservation.ticket = ticket
             reservation.save()
-            
-            
-            return redirect('JO_app:home')
-        
-        # Si le formulaire n'est pas valide, réafficher le formulaire avec les erreurs
-        reservations = Reservation.objects.filter(utilisateur=request.user)
-        return render(request, 'JO_app/reservation.html', {'form': form, 'reservations': reservations, 'errors': form.errors})
 
-class ModifyReservationView(LoginRequiredMixin, View):
-    
-    def get(self, request, reservation_id):
-        reservation = get_object_or_404(Reservation, id=reservation_id, utilisateur=request.user)
-        form = ReservationForm(instance=reservation)
-        return render(request, 'JO_app/modifier_reservation.html', {'form': form, 'reservation_id': reservation_id})
-    
-    def post(self, request, reservation_id):
-        reservation = get_object_or_404(Reservation, id=reservation_id, utilisateur=request.user)
-        form = ReservationForm(request.POST, instance=reservation)
-        if form.is_valid():
-            form.save()
             return redirect('JO_app:home')
-        return render(request, 'JO_app/modifier_reservation.html', {'form': form, 'reservation_id': reservation_id, 'errors': form.errors})
 
 class TicketDownloadView(View):
     
@@ -387,9 +362,9 @@ class TicketDownloadView(View):
         try:
             reservation = Reservation.objects.get(id=reservation_id)
         except Reservation.DoesNotExist:
-            return HttpResponseNotFound("Réservation non trouvée")
-
-        if not reservation.ticket:
+            return HttpResponse(status=404)
+        
+        if not hasattr(reservation, 'ticket'):
             return HttpResponseNotFound("Ticket non disponible")
 
         # Créer un objet BytesIO pour stocker le PDF en mémoire
@@ -404,42 +379,43 @@ class TicketDownloadView(View):
         data = [
             ["Nom", reservation.utilisateur.nom],
             ["Prénom", reservation.utilisateur.prenom],
-            ["Événement", ticket.reservation.offre_de_billets.type],
-            ["Date", ticket.reservation.date_reservation.strftime('%d-%m-%Y')],
-            # Ajoutez d'autres informations que vous souhaitez inclure dans le billet
+            ["Noms des utilisateurs", ", ".join([user.nom if hasattr(user, 'nom') else user for user in reservation.noms_utilisateurs])],
+            ["Événement", reservation.offre_de_billets.type],  # Correction ici
+            ["Épreuve", reservation.offre_de_billets.sport],  # Correction ici
+            ["Date", reservation.date_reservation.strftime('%d-%m-%Y')],
         ]
 
         # Créer une table pour stocker les informations
-        table = Table(data, colWidths=[150, 200])  # Ajuster la largeur des colonnes
+        table = Table(data, colWidths=[150, 200])
 
         # Appliquer un style à la table
         style = TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#009F3D")),  # Couleur de fond de la première ligne (en-tête)
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),  # Couleur du texte de la première ligne
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),  # Alignement du texte au centre pour toutes les cellules
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),  # Police en gras pour la première ligne
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),  # Espacement en bas pour la première ligne
-            ('BACKGROUND', (0, 1), (-1, -1), colors.white),  # Couleur de fond pour le reste du tableau
-            ('GRID', (0, 0), (-1, -1), 1, colors.HexColor("#009F3D")),  # Couleur de la grille
+            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#009F3D")),
+            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
+            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
+            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
+            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
+            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
+            ('GRID', (0, 0), (-1, -1), 1, colors.HexColor("#009F3D")),
         ])
         table.setStyle(style)
 
         # Générer le code QR
-        qr = qrcode.make(f"ID de réservation : {reservation_id}", box_size=10)  # Définir la taille du QR code
+        qr = qrcode.make(f"ID de réservation : {reservation_id}", box_size=10)
         qr_img = BytesIO()
         qr.save(qr_img)
         qr_img.seek(0)
 
         # Ajouter le code QR au PDF
         qr_code_image = Image(qr_img)
-        qr_code_image.drawHeight = 150  # Ajuster la hauteur du QR code
-        qr_code_image.drawWidth = 150   # Ajuster la largeur du QR code
+        qr_code_image.drawHeight = 50
+        qr_code_image.drawWidth = 150
 
         # Créer un tableau avec le QR code et les informations utilisateur côte à côte
         combined_data = [
-            [qr_code_image, table]  # QR code à gauche et informations à droite
+            [qr_code_image, table]
         ]
-        combined_table = Table(combined_data, colWidths=[150, 400])  # Ajuster les largeurs des colonnes
+        combined_table = Table(combined_data, colWidths=[150, 400])
 
         # Ajouter le tableau combiné aux éléments du PDF
         elements.append(combined_table)
@@ -450,5 +426,5 @@ class TicketDownloadView(View):
         # Retourner le PDF en tant que réponse HTTP
         buffer.seek(0)
         response = HttpResponse(buffer.read(), content_type='application/pdf')
-        response['Content-Disposition'] = f'attachment; filename="billet_{ticket.id}.pdf"'
+        response['Content-Disposition'] = f'attachment; filename="billet_{reservation.id}.pdf"'
         return response

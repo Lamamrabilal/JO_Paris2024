@@ -3,7 +3,7 @@
 {% block title %}Page Principale{% endblock %}
 
 {% block content %}
-<main class="content-container">
+<main class="content-container" id="contenu">
     <div class="background-image">
         <img class="palais" src="{% static 'images/tour_eiffel.jpg' %}" alt="Grand Palais" width="100%">
         <h1 class="content-title">Bienvenue sur les Jeux Olympiques Paris 2024 !</h1>
@@ -15,7 +15,9 @@
             <div class="hero-content">
                 <h1>Achetez vos billets sur le site des Jeux Olympiques Paris 2024</h1>
                 <p>Assistez aux plus grands moments de l'histoire sportive !</p>
-                <a href="{% url 'JO_app:connexion' %}" class="btn">Identifier-vous</a>
+                {% if not user.is_authenticated %}
+                    <a href="{% url 'JO_app:connexion' %}" class="btn">Identifier-vous</a>
+                {% endif %}
             </div>
         </section>
     </div>
@@ -29,16 +31,12 @@
                 {% for sport in sports %}
                 <div class="col-lg-3 mb-4">
                     <div class="card">
-                        
-
-                            <img src="{% static sport.image %}" class="card-img-top" alt="{{ sport.nom }}">
-                        </a>
+                        <img src="{% static sport.image %}" class="card-img-top" alt="{{ sport.nom }}">
                         <div class="card-body">
                             <h5 class="card-title">{{ sport.nom }}</h5>
                             <p class="card-text">{{ sport.description }}</p>
                             <!-- Afficher les offres pour ce sport -->
-                            <a href="{% url 'JO_app:detail_sport' pk=sport.pk %}"class="btn">Reserver</a>
-
+                            <a href="{% url 'JO_app:detail_sport' pk=sport.pk %}" class="btn">Reserver</a>
                         </div>
                     </div>
                 </div>
@@ -54,7 +52,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 {% for site in sites %}
-                <div class="col-lg-4 mb-4 w-4 h-4">
+                <div class="col-lg-4 mb-4">
                     <div class="card">
                         <img src="{% static site.image %}" class="card-img-top" alt="{{ site.name }}">
                         <div class="card-body">
@@ -67,5 +65,7 @@
             </div>
         </div>
     </section>
+
+
 </main>
 {% endblock %}

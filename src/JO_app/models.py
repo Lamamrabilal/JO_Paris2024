@@ -122,6 +122,10 @@ class OffreDeBillet(models.Model):
             utilisateur = Utilisateur.objects.create(
                 username=f"utilisateur_{Utilisateur.objects.count() + 1}")
 
+    def effectuer_vente(self):
+        self.nombre_ventes += 1
+        self.save()
+        print(f"Vente effectuée pour l'offre {self.id}. Nombre de ventes mis à jour à {self.nombre_ventes}.")
     def __str__(self):
         return f"{self.type} - {self.sport.name}" if self.sport else f"{self.type}"
 
@@ -133,6 +137,7 @@ class Reservation(models.Model):
     date_reservation = models.DateTimeField(auto_now_add=True)
     clef_2 = models.UUIDField(default=uuid.uuid4, editable=False)
     ticket = models.OneToOneField('Ticket', on_delete=models.CASCADE, related_name='reservation_ticket', null=True, blank=True)
+    noms_utilisateurs = models.JSONField(default=list)  # Champ pour stocker les noms des utilisateurs
 
     def __str__(self):
         return f"{self.utilisateur}"

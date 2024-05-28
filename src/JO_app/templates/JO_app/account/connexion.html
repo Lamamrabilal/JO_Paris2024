@@ -15,7 +15,7 @@
 
 <div class="logo-container">
     <!-- Logo des Jeux Olympiques Paris 2024 -->
-    <img src="{% static 'images/paris_2024.png' %}" alt="Logo Jeux Olympiques Paris 2024" width='180px'>
+    <a href="{%url 'JO_app:home'%}"><img src="{% static 'images/paris_2024.png' %}" alt="Logo Jeux Olympiques Paris 2024" width='180px'></a>
 </div>
 
 <div class="container">
@@ -27,7 +27,7 @@
                 <div class="col-lg-5">
                     <div class="card shadow-lg border-0 rounded-lg mt-0 mb-3">
                         <div class="card-header justify-content-center">
-                          <h3 class="font-weight-light my-1 text-center">Sign In</h3>
+                          <h3 class="font-weight-light my-1 text-center">Se Connecter</h3>
                         </div>
                         {% if form.errors %}
                             <div class="alert alert-danger alert-dismissible" role="alert">
@@ -50,8 +50,8 @@
                         </div>
                         <div class="card-footer text-center">
                             <div class="small">
-                                <a href="{%url 'JO_app:inscription'%}">Don't have an account yet? Go to signup</a><br>
-                                <a href=""><i>Forgot Password?</i></a>
+                                <a href="{%url 'JO_app:inscription'%}">Vous n'avez pas encore de compte? Identifier-Vous</a><br>
+                                <a href=""><i>Mot de Passe oublié?</i></a>
                             </div>
                         </div>
                     </div>

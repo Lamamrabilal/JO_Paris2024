@@ -1,3 +1,23 @@
+
+
+
+document.addEventListener('DOMContentLoaded', function () {
+    const menuToggle = document.querySelector('.menu-toggle');
+    const sidebar = document.querySelector('.sidebar');
+    const closeSidebar = document.querySelector('.close-sidebar');
+
+    menuToggle.addEventListener('click', function() {
+        menuToggle.classList.toggle('menu-open');
+        sidebar.style.left = (sidebar.style.left === '-250px') ? '0' : '-250px';
+    });
+
+    closeSidebar.addEventListener('click', function() {
+        menuToggle.classList.remove('menu-open');
+        sidebar.style.left = '-250px';
+    });
+});
+
+
 // JavaScript (script.js)
 document.addEventListener('DOMContentLoaded', () => {
     // Sélectionner l'élément du compteur de panier
@@ -21,13 +41,16 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     };
 
-    // Fonction pour ajouter un article au panier
     const ajouterAuPanier = () => {
-        nombreArticlesPanier++; // Augmenter le nombre d'articles lorsque un article est ajouté au panier
-        // Stocker le nombre d'articles dans le panier dans le stockage local du navigateur
-        localStorage.setItem('nombreArticlesPanier', nombreArticlesPanier);
-        mettreAJourCompteurPanier(nombreArticlesPanier); // Mettre à jour le compteur du panier
-    };
+    nombreArticlesPanier++; // Augmenter le nombre d'articles lorsque un article est ajouté au panier
+    // Stocker le nombre d'articles dans le panier dans le stockage local du navigateur
+    localStorage.setItem('nombreArticlesPanier', nombreArticlesPanier);
+    mettreAJourCompteurPanier(nombreArticlesPanier); // Mettre à jour le compteur du panier
+
+    // Réinitialiser le compteur à zéro pour simuler un nouvel achat
+    nombreArticlesPanier = 0;
+};
+
 
     // Fonction pour supprimer un article du panier
     const supprimerDuPanier = () => {
@@ -58,4 +81,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Mettre à jour le compteur du panier lors du chargement de la page
     mettreAJourCompteurPanier(nombreArticlesPanier);
+});
+
+document.addEventListener("DOMContentLoaded", function() {
+    // Votre code JavaScript ici
+    const contenu = document.getElementById('contenu');
+    const url = '/JO_app/home/';
+
+    fetch(url)
+        .then(response => response.text())
+        .then(html => {
+            // Créer un div temporaire pour contenir le HTML chargé
+            const tempDiv = document.createElement('div');
+            tempDiv.innerHTML = html;
+
+            // Trouver et extraire le contenu de la balise main
+            const nouveauContenu = tempDiv.querySelector('main').innerHTML;
+
+            // Mettre à jour seulement le contenu de la balise main
+            contenu.innerHTML = nouveauContenu;
+        })
+        .catch(error => {
+            console.error('Une erreur s\'est produite : ', error);
+        });
 });

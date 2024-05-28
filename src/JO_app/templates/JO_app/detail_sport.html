@@ -7,22 +7,25 @@
 
 {% block content %}
     <div class="container">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card mb-4">
-                    <!-- Utilisez la balise static pour charger l'image du sport -->
-                    <img src="{% static sport.image %}" class="card-img-top" alt="{{ sport.name }}">
-                    <div class="card-body">
-                        <h5 class="card-title">{{ sport.name }}</h5>
-                        <p class="card-text">{{ sport.description }}</p>
-                    </div>
-                </div>
+       <div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card mb-3">
+            <!-- Utilisez la balise static pour charger l'image du sport -->
+            <img src="{% static  'images/paris_2024.png'%}">
+            <img src="{% static sport.image %}" class="card-img-top" alt="{{ sport.name }}">
+            
+            <div class="card-body">
+                <h5 class="card-title">{{ sport.name }}</h5>
+                <p class="card-text">{{ sport.description }}</p>
             </div>
         </div>
+    </div>
+</div>
+
         <div class="row">
             {% for offre in sport.offres.all %}
                 <div class="col-md-4">
-                    <div class="card mb-4">
+                    <div class="card mb-3">
                         <div class="card-body">
                             <!-- Utilisez également la balise static pour charger l'image du sport -->
                             <img src="{% static sport.image %}" class="card-img-top" alt="{{ sport.name }}" style="max-width: 100px; max-height: 100px;">
