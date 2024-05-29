@@ -24,6 +24,8 @@ from reportlab.lib.pagesizes import letter
 from reportlab.lib import colors
 from reportlab.platypus import SimpleDocTemplate, Table, TableStyle, Image
 from io import BytesIO
+from reportlab.lib.styles import ParagraphStyle
+from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 
 class HomePageView(TemplateView):
     template_name = 'JO_app/home.html'
@@ -32,8 +34,6 @@ class HomePageView(TemplateView):
         context = super().get_context_data(**kwargs)
         context['user'] = self.request.user
         
-       
-        # Créer une liste de sports avec leurs informations et les prix selon les offres
         sports_data = [
             {
                 'name': 'Athlétisme',
@@ -152,7 +152,6 @@ class HomePageView(TemplateView):
 
 class ListeOffresView(ListView):
     model = OffreDeBillet
-    
     context_object_name = 'offres'
 
     def get_context_data(self, **kwargs):
@@ -196,7 +195,7 @@ class AjouterAuPanierView(View):
         if offre_id not in panier:
             panier.append(offre_id)
             request.session['panier'] = panier
-            request.session.modified = True  # Marquer la session comme modifiée
+            request.session.modified = True  
             messages.success(request, 'Offre ajoutée au panier avec succès !')
         else:
             messages.info(request, 'Cette offre est déjà dans votre panier.')
@@ -232,7 +231,7 @@ class PayerPanierView(View):
         return redirect('JO_app:panier')
 
     def simuler_paiement(self):
-        return random.random() < 0.8  # Simule un paiement réussi avec 80% de probabilité
+        return random.random() < 0.8  
 
     def creer_reservation(self, request):
         panier = request.session.get('panier')
@@ -304,10 +303,10 @@ def connexion(request):
             email = form.cleaned_data.get('username')
             password = form.cleaned_data.get('password')
             user = authenticate(email=email, password=password)
-            print("User:", user)  # Ajoutez cette ligne pour afficher l'utilisateur authentifié
+            print("User:", user)  #  afficher l'utilisateur authentifié
             if user is not None:
                 login(request, user)
-                print("User is authenticated:", request.user.is_authenticated)  # Ajoutez cette ligne pour vérifier si l'utilisateur est authentifié
+                print("User is authenticated:", request.user.is_authenticated)  #vérifier si l'utilisateur est authentifié
                 return redirect('JO_app:home')
     else:
         form = UtilisateurLoginForm()
@@ -317,7 +316,7 @@ def connexion(request):
 class DeconnexionView(View):
     def get(self, request):
         logout(request)
-        return redirect('JO_app:home')  # Rediriger vers la page d'accueil après déconnexion
+        return redirect('JO_app:home')  
 
 
 @login_required
@@ -356,75 +355,81 @@ class ReservationView(LoginRequiredMixin, View):
 
             return redirect('JO_app:home')
 
+
+
 class TicketDownloadView(View):
     
-    def get(self, request, reservation_id):
+    def get_reservation(self, reservation_id):
         try:
-            reservation = Reservation.objects.get(id=reservation_id)
+            return Reservation.objects.get(id=reservation_id)
         except Reservation.DoesNotExist:
-            return HttpResponse(status=404)
-        
-        if not hasattr(reservation, 'ticket'):
-            return HttpResponseNotFound("Ticket non disponible")
+            return None
 
-        # Créer un objet BytesIO pour stocker le PDF en mémoire
-        buffer = BytesIO()
-
-        # Créer un document PDF
-        pdf = SimpleDocTemplate(buffer, pagesize=letter)
-        elements = []
-
-        # Ajouter le contenu au PDF
-        ticket = reservation.ticket
-        data = [
-            ["Nom", reservation.utilisateur.nom],
-            ["Prénom", reservation.utilisateur.prenom],
-            ["Noms des utilisateurs", ", ".join([user.nom if hasattr(user, 'nom') else user for user in reservation.noms_utilisateurs])],
-            ["Événement", reservation.offre_de_billets.type],  # Correction ici
-            ["Épreuve", reservation.offre_de_billets.sport],  # Correction ici
-            ["Date", reservation.date_reservation.strftime('%d-%m-%Y')],
-        ]
-
-        # Créer une table pour stocker les informations
-        table = Table(data, colWidths=[150, 200])
-
-        # Appliquer un style à la table
-        style = TableStyle([
-            ('BACKGROUND', (0, 0), (-1, 0), colors.HexColor("#009F3D")),
-            ('TEXTCOLOR', (0, 0), (-1, 0), colors.white),
-            ('ALIGN', (0, 0), (-1, -1), 'CENTER'),
-            ('FONTNAME', (0, 0), (-1, 0), 'Helvetica-Bold'),
-            ('BOTTOMPADDING', (0, 0), (-1, 0), 12),
-            ('BACKGROUND', (0, 1), (-1, -1), colors.white),
-            ('GRID', (0, 0), (-1, -1), 1, colors.HexColor("#009F3D")),
-        ])
-        table.setStyle(style)
-
-        # Générer le code QR
-        qr = qrcode.make(f"ID de réservation : {reservation_id}", box_size=10)
+    def generate_qr_code(self, data):
+        qr = qrcode.make(data, box_size=10)
         qr_img = BytesIO()
         qr.save(qr_img)
         qr_img.seek(0)
+        return qr_img
 
-        # Ajouter le code QR au PDF
+    def create_pdf_elements(self, reservation):
+        elements = []
+
+        # Title
+        title_style = ParagraphStyle(name='Title', fontSize=20, alignment=1, spaceAfter=12)
+        elements.append(Paragraph("Billet - Jeux Olympiques Paris 2024", title_style))
+        elements.append(Spacer(1, 12))
+
+        # Logo
+        logo_path = os.path.join(settings.STATIC_URL, '/Users/bilallamamra/Desktop/Jeux_olympique_Paris_2024/src/JO_app/static/images/photo_officielle.jpeg')
+        if not os.path.exists(logo_path):
+            raise FileNotFoundError(f"Logo file not found: {logo_path}")
+        logo = Image(logo_path, width=600, height=250)
+        elements.append(logo)
+        elements.append(Spacer(1, 12))
+
+        # Ticket Info
+        info_style = ParagraphStyle(name='Info', fontSize=12, alignment=0)
+        elements.append(Paragraph(f"<b>Nom:</b> {reservation.utilisateur.nom}", info_style))
+        elements.append(Paragraph(f"<b>Prénom:</b> {reservation.utilisateur.prenom}", info_style))
+        elements.append(Paragraph(f"<b>Personnes Accompagnants:</b> {', '.join([user.nom if hasattr(user, 'nom') else user for user in reservation.noms_utilisateurs])}", info_style))
+        elements.append(Paragraph(f"<b>Événement:</b> {reservation.offre_de_billets.type}", info_style))
+        elements.append(Paragraph(f"<b>Épreuve:</b> {reservation.offre_de_billets.sport}", info_style))
+        elements.append(Paragraph(f"<b>Date:</b> {reservation.date_reservation.strftime('%d-%m-%Y')}", info_style))
+        elements.append(Spacer(1, 12))
+
+        # QR Code
+        qr_img = self.generate_qr_code(f"ID de réservation : {reservation.id}")
         qr_code_image = Image(qr_img)
-        qr_code_image.drawHeight = 50
-        qr_code_image.drawWidth = 150
+        qr_code_image.drawHeight = 200
+        qr_code_image.drawWidth = 200
+        elements.append(qr_code_image)
+        elements.append(Spacer(1, 12))
 
-        # Créer un tableau avec le QR code et les informations utilisateur côte à côte
-        combined_data = [
-            [qr_code_image, table]
-        ]
-        combined_table = Table(combined_data, colWidths=[150, 400])
+        # Footer
+        footer_style = ParagraphStyle(name='Footer', fontSize=12, alignment=1)
+        elements.append(Paragraph("Merci de votre participation aux Jeux Olympiques de Paris 2024", footer_style))
 
-        # Ajouter le tableau combiné aux éléments du PDF
-        elements.append(combined_table)
+        return elements
 
-        # Construire le PDF
+    def generate_pdf(self, elements):
+        buffer = BytesIO()
+        pdf = SimpleDocTemplate(buffer, pagesize=letter)
         pdf.build(elements)
-
-        # Retourner le PDF en tant que réponse HTTP
         buffer.seek(0)
-        response = HttpResponse(buffer.read(), content_type='application/pdf')
+        return buffer
+
+    def get(self, request, reservation_id):
+        reservation = self.get_reservation(reservation_id)
+        if not reservation:
+            return HttpResponse(status=404)
+
+        if not hasattr(reservation, 'ticket'):
+            return HttpResponseNotFound("Ticket non disponible")
+
+        elements = self.create_pdf_elements(reservation)
+        pdf_buffer = self.generate_pdf(elements)
+
+        response = HttpResponse(pdf_buffer.read(), content_type='application/pdf')
         response['Content-Disposition'] = f'attachment; filename="billet_{reservation.id}.pdf"'
         return response

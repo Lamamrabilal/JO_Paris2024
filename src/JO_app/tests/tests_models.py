@@ -2,9 +2,12 @@ from django.test import TestCase
 from django.utils import timezone
 from django.core.files.uploadedfile import SimpleUploadedFile
 from JO_app.models import Utilisateur, Sport, Site, OffreDeBillet, Reservation, Ticket
-import uuid
 import hashlib
-
+import uuid
+from io import BytesIO
+from PIL import Image
+import qrcode
+from pyzbar.pyzbar import decode
 class UtilisateurModelTests(TestCase):
     
     def setUp(self):
@@ -85,21 +88,6 @@ class OffreDeBilletModelTests(TestCase):
         self.assertEqual(offre.sport, self.sport)
         self.assertEqual(offre.site, self.site)
 
-    def ajouter_utilisateurs(self, nombre_utilisateurs):
-        if self.type == 'Duo':
-            nombre_utilisateurs_a_ajouter = 2 * nombre_utilisateurs
-        elif self.type == 'Familiale':
-            nombre_utilisateurs_a_ajouter = 4 * nombre_utilisateurs
-        else:
-            nombre_utilisateurs_a_ajouter = nombre_utilisateurs
-
-        for _ in range(nombre_utilisateurs_a_ajouter):
-            Utilisateur.objects.create_user(
-                email=f"utilisateur_{Utilisateur.objects.count() + 1}@example.com",
-                nom="Nom",
-                prenom="Prenom",
-                mot_de_passe="defaultpassword"
-            )
     def test_ajouter_nouveaux_choix(self):
         initial_choices = len(OffreDeBillet.TYPES_CHOICES)
         OffreDeBillet.ajouter_nouveaux_choix([('Group', 'Group')])
@@ -149,49 +137,82 @@ class ReservationModelTests(TestCase):
     def test_str_representation(self):
         self.assertEqual(str(self.reservation), str(self.utilisateur))
 
-
-class TicketModelTests(TestCase):
-    
+        
+class TicketModelTestCase(TestCase):
     def setUp(self):
+        
         self.utilisateur = Utilisateur.objects.create_user(
-            email="test@example.com",
-            nom="Test",
-            prenom="User",
-            mot_de_passe="password123"
+            nom='testuser',
+            prenom='testuser',
+            email='testuser@example.com',
+            password='testpassword',
+            clef_1=uuid.uuid4()
         )
-        self.sport = Sport.objects.create(
-            name="Football",
-            image=SimpleUploadedFile(name='test_image.jpg', content=b'', content_type='image/jpeg'),
-            description="Popular sport"
-        )
-        self.site = Site.objects.create(
-            name="Stadium",
-            image=SimpleUploadedFile(name='test_site_image.jpg', content=b'', content_type='image/jpeg'),
-            location="City Center"
-        )
+        self.sport = Sport.objects.create(name='TestSport')
         self.offre = OffreDeBillet.objects.create(
-            type="Solo",
-            description="Single ticket",
-            prix=50.00,
-            sport=self.sport,
-            site=self.site
+            type='Solo',
+            description='Test description',
+            prix=30,
+            sport=self.sport
         )
         self.reservation = Reservation.objects.create(
             utilisateur=self.utilisateur,
-            offre_de_billets=self.offre
+            offre_de_billets=self.offre,
+            clef_2=uuid.uuid4()
         )
-        self.ticket = Ticket.objects.create(
+
+    def test_ticket_creation(self):
+        ticket = Ticket.objects.create(
             reservation=self.reservation,
             offre_de_billets=self.offre
         )
+        self.assertEqual(ticket.reservation, self.reservation)
+        self.assertEqual(ticket.offre_de_billets, self.offre)
+        self.assertEqual(ticket.clef_finale, 'default_value')
 
-    def test_ticket_creation_and_qr_code_generation(self):
-        self.ticket.generer_e_billet()
+    def test_generer_cle_finale(self):
+        ticket = Ticket.objects.create(
+            reservation=self.reservation,
+            offre_de_billets=self.offre
+        )
+        ticket.generer_cle_finale()
+        expected_clef_finale = hashlib.sha256(
+            f"{self.utilisateur.clef_1}-{self.reservation.clef_2}".encode()
+        ).hexdigest()
+        self.assertEqual(ticket.clef_finale, expected_clef_finale)
 
-        self.assertIsNotNone(self.ticket.qr_code)
-        self.assertTrue(self.ticket.qr_code.name.startswith("qr_codes/e_billet_"))
+    def test_generer_e_billet(self):
+        ticket = Ticket.objects.create(
+            reservation=self.reservation,
+            offre_de_billets=self.offre
+        )
+        ticket.generer_e_billet()
 
-    def test_ticket_clef_finale_generation(self):
-        self.ticket.generer_cle_finale()
-        expected_clef = hashlib.sha256(f"{self.reservation.utilisateur.clef_1}-{self.reservation.clef_2}".encode()).hexdigest()
-        self.assertEqual(self.ticket.clef_finale, expected_clef)
+       
+        expected_clef_finale = hashlib.sha256(
+            f"{self.utilisateur.clef_1}-{self.reservation.clef_2}".encode()
+        ).hexdigest()
+        self.assertEqual(ticket.clef_finale, expected_clef_finale)
+
+       
+        self.assertTrue(ticket.qr_code.name.startswith('qr_codes/e_billet_'))
+        self.assertTrue(ticket.qr_code.name.endswith('.png'))
+
+    def test_qr_code_content(self):
+        ticket = Ticket.objects.create(
+            reservation=self.reservation,
+            offre_de_billets=self.offre
+        )
+        ticket.generer_e_billet()
+
+        
+        ticket.qr_code.open()
+        img = Image.open(ticket.qr_code)
+        decoded_data = decode(img)
+        decoded_clef_finale = decoded_data[0].data.decode('utf-8')
+
+        
+        expected_clef_finale = hashlib.sha256(
+            f"{self.utilisateur.clef_1}-{self.reservation.clef_2}".encode()
+        ).hexdigest()
+        self.assertEqual(decoded_clef_finale, expected_clef_finale)

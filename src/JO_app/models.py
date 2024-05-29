@@ -137,7 +137,7 @@ class Reservation(models.Model):
     date_reservation = models.DateTimeField(auto_now_add=True)
     clef_2 = models.UUIDField(default=uuid.uuid4, editable=False)
     ticket = models.OneToOneField('Ticket', on_delete=models.CASCADE, related_name='reservation_ticket', null=True, blank=True)
-    noms_utilisateurs = models.JSONField(default=list)  # Champ pour stocker les noms des utilisateurs
+    noms_utilisateurs = models.JSONField(default=list) 
 
     def __str__(self):
         return f"{self.utilisateur}"
@@ -147,7 +147,7 @@ class Reservation(models.Model):
         self.save()
 
     def get_ticket_qr_code_url(self):
-        # sourcery skip: assign-if-exp, reintroduce-else
+       
        
         
         if self.ticket:
@@ -173,9 +173,7 @@ class Ticket(models.Model):
         self.clef_finale = hashlib.sha256(clef_concatenee.encode()).hexdigest()
 
     def generer_e_billet(self):
-
         self.generer_cle_finale()
-
         qr = qrcode.QRCode(
             version=1,
             error_correction=qrcode.constants.ERROR_CORRECT_L,
@@ -184,14 +182,9 @@ class Ticket(models.Model):
         )
         qr.add_data(self.clef_finale)
         qr.make(fit=True)
-
         img = qr.make_image(fill_color="black", back_color="white")
-
         buffer = BytesIO()
         img.save(buffer, format='PNG')
-
         file_name = f"e_billet_{self.id}.png"
-        self.qr_code.save(file_name, InMemoryUploadedFile(
-            buffer, None, file_name, 'image/png', buffer.tell, None))
-
+        self.qr_code.save(file_name, InMemoryUploadedFile(buffer, None, file_name, 'image/png', buffer.tell(), None))
         self.save()

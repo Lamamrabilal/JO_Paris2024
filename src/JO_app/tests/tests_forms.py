@@ -31,7 +31,7 @@ class TestUtilisateurCreationForm(TestCase):
         }
         form = UtilisateurCreationForm(data=form_data)
         
-        # Affiche les erreurs de validation si le formulaire n'est pas valide
+       
         if not form.is_valid():
             print(form.errors.as_data())
         
@@ -157,5 +157,5 @@ class TicketFormTest(TestCase):
         }
         form_files = {'qr_code': uploaded_file}
         form = TicketForm(data=form_data, files=form_files)
-        print(form.errors)  # Affiche les erreurs de validation du formulaire pour diagnostic
+        print(form.errors) 
         self.assertTrue(form.is_valid())

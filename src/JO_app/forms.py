@@ -47,7 +47,7 @@ class UtilisateurLoginForm(AuthenticationForm):
     
     
     class Meta:
-        # Exclure le champ 'username'
+        
         model = Utilisateur
         fields = ['email', 'password']
     

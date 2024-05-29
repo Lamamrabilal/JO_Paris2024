@@ -66,7 +66,7 @@ header {
 
 /* Style pour le logo lui-même */
 .logo-container img {
-    width: 110px; /* Largeur du logo */
+    width: 110px; 
     
   
 }
@@ -85,93 +85,101 @@ nav {
 }
 
 .nav-links li {
-    margin-right: 20px; /* Espace entre les éléments de la barre de navigation */
+    margin-right: 20px; 
 }
 
 .nav-links li a {
-    position: relative; /* Ajoutez cette ligne pour positionner le pseudo-élément correctement */
+    position: relative; 
     text-decoration: none;
-    color: #333; /* Couleur des liens */
+    color: #333; 
     font-weight: bold;
 }
 
 .nav-links li a::after {
     content: '';
     position: absolute;
-    bottom: -3px; /* Ajustez selon votre préférence */
+    bottom: -3px; 
     left: 0;
     width: 0;
-    height: 2px; /* Épaisseur du trait */
+    height: 2px; 
     background-color: #490085;
-; /* Couleur du trait */
-    transition: width 0.5s ease; /* Animation de la largeur du trait */
+
+    transition: width 0.5s ease;
 }
 
 .nav-links li a:hover::after {
-    width: 100%; /* La largeur du trait au survol */
+    width: 100%; 
 }
 
 /* Ajoutez une transition pour la couleur du texte au survol */
 .nav-links li a:hover {
-    color: rgb(0, 0, 0); /* Couleur des liens */
-    transition: color 0.3s ease; /* Transition de la couleur du texte */
+    color: rgb(0, 0, 0); 
+    transition: color 0.3s ease; 
 }
 
 
 /* Style pour le panier */
 .cart {
-    margin-left: auto; /* Pour pousser l'icône de panier à droite */
-    position: relative; /* Position relative pour les éléments enfants */
+    margin-left: auto; 
+    position: relative; 
 }
 
 .cart a {
-    text-decoration: none; /* Supprimer la décoration du lien */
-    color: #333; /* Couleur du texte du panier */
-    display: flex; /* Utilisation de flexbox pour aligner les éléments horizontalement */
-    align-items: center; /* Aligner les éléments verticalement */
-    font-weight: bold; /* Texte en gras */
+    text-decoration: none; 
+    color: #333; 
+    display: flex; 
+    align-items: center;
+    font-weight: bold;
     margin-left: 12px;
 }
 
 .cart i {
-    font-size: 24px; /* Taille de l'icône */
-    color: #333; /* Couleur de l'icône */
-    margin-right: 5px; /* Espace entre l'icône et le texte */
+    font-size: 24px; 
+    color: #333; 
+    margin-right: 5px; 
 }
 
 .cart-count {
-    background-color: #FF5733; /* Couleur de fond du compteur de panier */
-    color: #fff; /* Couleur du texte du compteur de panier */
-    border-radius: 50%; /* Bordure arrondie pour le compteur de panier */
-    width: 20px; /* Largeur du compteur de panier */
-    height: 20px; /* Hauteur du compteur de panier */
-    font-size: 12px; /* Taille de la police du compteur de panier */
-    display: flex; /* Utilisation de flexbox pour aligner le texte au centre */
-    justify-content: center; /* Aligner le texte horizontalement au centre */
-    align-items: center; /* Aligner le texte verticalement au centre */
-    position: absolute; /* Position absolue pour placer le compteur de panier */
-    top: -8px; /* Décalage vers le haut pour ajuster la position du compteur de panier */
-    right: -8px; /* Décalage vers la droite pour ajuster la position du compteur de panier */
+    background-color: #FF5733; 
+    color: #fff; 
+    border-radius: 50%; 
+    width: 20px; 
+    height: 20px;
+    font-size: 12px; 
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    position: absolute; 
+    top: -8px; 
+    right: -8px; 
 }
 
 
 /* Style pour les boutons d'inscription/connexion */
 .auth-button {
     text-decoration: none;
-    color: #333; /* Couleur du texte des boutons */
+    color: #333; 
     padding: 4px 15px;
-    border: 2px solid #333; /* Bordure des boutons */
-    border-radius: 5px; /* Pour arrondir les coins des boutons */
+    border: 2px solid #333; 
+    border-radius: 5px; 
     margin-left: 12px;
 }
 
 .auth-button:hover {
      background-color: #490085;
-     /* Couleur de fond des boutons au survol */
-    color: #fff; /* Couleur du texte des boutons au survol */
+    
+    color: #fff;
      text-decoration: none;
 }
-
+.auth-text{
+    font-size: 16px;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+.auth-icon{
+     color: #3d1a83;
+    font-size: 20px;
+}
 
 /* Styles communs pour le menu hamburger */
 .menu-toggle {
@@ -204,16 +212,18 @@ nav {
 .sidebar {
     position: fixed;
     top: 0;
-    left: -250px;
-    width: 250px;
+    left: -350px; 
+    width: 350px; 
+    min-width: 50px;
     height: 100%;
-    background-color: #000000; /* Couleur de fond */
+    background-color: #00b1b8;
     overflow-y: auto;
     padding-top: 60px;
-    transition: left 0.5s ease;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5); /* Ajout d'ombre */
-    z-index: 1000; /* Assurez-vous que la sidebar est au-dessus du contenu */
+    transition: left 0.5s ease; 
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.5);
 }
+
+
 
 /* Style pour les liens de navigation */
 .sidebar .nav-links {
@@ -226,7 +236,7 @@ nav {
 
 .sidebar .nav-links li {
     padding: 15px 20px;
-    border-bottom: 1px solid #ffffff; /* Bordure de séparation */
+    border-bottom: 1px solid #ffffff; 
 }
 
 .sidebar .nav-links li:last-child {
@@ -234,15 +244,15 @@ nav {
 }
 
 .sidebar .nav-links li a {
-    color: #ffffff; /* Couleur du texte */
+    color: #ffffff; 
     text-decoration: none;
     display: flex;
     align-items: center;
-    transition: color 0.3s; /* Transition pour l'effet de survol */
+    transition: color 0.3s; 
 }
 
 .sidebar .nav-links li a:hover {
-    color: #3d1a83; /* Couleur de survol */
+    color: #3d1a83; 
 }
 
 .sidebar .nav-links li a i {
@@ -266,19 +276,19 @@ nav {
     left: 50%;
     transform: translateX(-50%);
     text-align: center;
-    width: 100%;
+    width: 80%;
 }
 
 /* Style pour le lien du panier */
 .sidebar .cart a {
-    color: #3d1a83; /* Couleur du texte */
+    color: #3d1a83; 
     text-decoration: none;
     font-size: 25px;
     position: relative;
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #ffffff; /* Couleur de fond */
+    background-color: #571d1d; 
     padding: 10px 20px;
     border-radius: 5px;
     transition: background-color 0.3s, color 0.3s;
@@ -286,14 +296,14 @@ nav {
 
 /* Effet de survol pour le lien du panier */
 .sidebar .cart a:hover {
-    background-color: #3d1a83; /* Couleur de survol */
+    background-color: #3d1a83; 
     
 }
 
 /* Style pour l'icône du panier */
 .sidebar .cart a i {
     margin-right: 10px;
-    color: #ffffff; /* Couleur du texte en survol */
+    color: #ffffff; 
 }
 
 /* Style pour le compteur du panier */
@@ -327,7 +337,7 @@ nav {
 
     /* Afficher la sidebar par défaut sur les smartphones */
     .sidebar {
-        left: 0;
+        left:0;
     }
 
     /* Styles spécifiques pour le menu hamburger sur les smartphones */
@@ -344,25 +354,21 @@ nav {
     }
 }
 
-
-
-
-
 /* Style sophistiqué pour le contenu principal */
 .content-overlay {
     display: block;
     position: relative;
      
     background-color: #341c63;
-    background-size: cover; /* Assurez-vous que l'image de fond couvre toute la zone */
-    background-position: center; /* Centrez l'image de fond */
-    color:white; /* Couleur du texte */
-    padding: 50px; /* Espacement intérieur */
+    background-size: cover; 
+    background-position: center; 
+    color:white; 
+    padding: 50px; 
     margin:0px auto;
     width: 100%;
     
-    text-align: center; /* Centrage du texte */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Ombre */
+    text-align: center; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
 }
 
 
@@ -371,144 +377,144 @@ nav {
 .hero-content h1 {
   
 
-    font-size: 36px; /* Taille de la police */
-    font-weight: bold; /* Gras */
-    margin-bottom: 20px; /* Espacement bas */
+    font-size: 36px; 
+    font-weight: bold; 
+    margin-bottom: 20px; 
 }
 
 /* Style pour le paragraphe */
 .hero-content p {
-    font-size: 18px; /* Taille de la police */
-    margin-bottom: 20px; /* Espacement bas */
+    font-size: 18px; 
+    margin-bottom: 20px;
 }
 
 /* Style pour le bouton */
 .hero-content .btn {
-    display: inline-block; /* Permet au bouton d'être sur la même ligne */
-    padding: 10px 20px; /* Espacement à l'intérieur du bouton */
-    font-size: 16px; /* Taille de la police */
-    background-color: #ffffff; /* Couleur de fond */
-    color:#333; /* Couleur du texte */
-    border: 2px solid #ffffff; /* Bordure */
-    border-radius: 25px; /* Bordure arrondie */
-    text-decoration: none; /* Supprimer le soulignement par défaut */
-    transition: background-color 0.3s, color 0.3s, border-color 0.3s; /* Transition fluide lors du survol */
+    display: inline-block; 
+    padding: 10px 20px; 
+    font-size: 16px;
+    background-color: #ffffff; 
+    color:#333; 
+    border: 2px solid #ffffff; 
+    border-radius: 25px; 
+    text-decoration: none;
+    transition: background-color 0.3s, color 0.3s, border-color 0.3s; 
 }
 
 /* Style pour le survol du bouton */
 .hero-content .btn:hover {
-    background-color: #333; /* Couleur de fond au survol */
-    color: #ffffff; /* Couleur du texte au survol */
-    border-color: #ffffff; /* Couleur de la bordure au survol */
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); /* Ombre au survol */
-    text-decoration: none; /* Supprimer le soulignement par défaut */
+    background-color: #333;
+    color: #ffffff; 
+    border-color: #ffffff; 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
+    text-decoration: none; 
 }
 
 /* Style pour le titre des cartes des sports */
 .section-title {
-    text-align: center; /* Centrer horizontalement le titre */
-    margin-top: 60px; /* Espacement bas */
-    font-size: 36px; /* Taille de la police */
-    color: #333; /* Couleur du texte */
+    text-align: center; 
+    margin-top: 60px;
+    font-size: 36px; 
+    color: #333; 
 }
 
 
 /* Style sophistiqué pour les cartes des sports */
 .sports-cards {
-    padding: 50px 0; /* Espacement intérieur */
+    padding: 50px 0; 
 }
 
 /* Style pour chaque carte */
 .sports-cards .card {
-    border: none; /* Supprimer la bordure par défaut */
-    border-radius: 15px; /* Bordure arrondie */
-    overflow: hidden; /* Masquer tout contenu débordant */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre */
-    transition: box-shadow 0.3s; /* Transition fluide */
+    border: none; 
+    border-radius: 15px;
+    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: box-shadow 0.3s; 
 }
 
 /* Style pour l'image de la carte */
 .sports-cards .card-img-top {
-    border-top-left-radius: 15px; /* Arrondir le coin supérieur gauche */
-    border-top-right-radius: 15px; /* Arrondir le coin supérieur droit */
-    height: 200px; /* Hauteur de l'image */
-    object-fit: cover; /* Ajuster la taille de l'image */
+    border-top-left-radius: 15px; 
+    border-top-right-radius: 15px; 
+    height: 200px; 
+    object-fit: cover; 
 }
 
 /* Style pour le titre de la carte */
 .sports-cards .card-title {
-    font-weight: bold; /* Gras */
-    margin-bottom: 10px; /* Espacement bas */
+    font-weight: bold;
+    margin-bottom: 10px;
 }
 
 /* Style pour le texte de la carte */
 .sports-cards .card-text {
-    color: #555; /* Couleur du texte */
+    color: #555;
 }
 
 /* Style pour le survol de la carte */
 .sports-cards .card:hover {
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Ombre au survol */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 
 /* Ajout de style pour les cartes */
 .card {
    margin-top: 60px;
-    border: 1px solid #ddd; /* Ajoute une bordure grise autour des cartes */
-    border-radius: 8px; /* Arrondit les coins des cartes */
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
 }
 
 .card:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ajoute une ombre légère lorsqu'on survole les cartes */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .card-title {
-    font-size: 1.2rem; /* Taille de police plus grande pour les titres de carte */
-    margin-bottom: 0.5rem; /* Ajoute un petit espace en bas des titres */
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem; 
 }
 
 .card-text {
-    color: #555; /* Couleur de texte légèrement grisé */
+    color: #555; 
 }
 
 .card-img-top {
-    border-top-left-radius: 8px; /* Arrondit uniquement le coin supérieur gauche de l'image */
-    border-top-right-radius: 8px; /* Arrondit uniquement le coin supérieur droit de l'image */
-    max-height: 200px; /* Limite la hauteur maximale de l'image */
-    object-fit: cover; /* Ajuste la taille de l'image pour couvrir complètement la zone définie */
+    border-top-left-radius: 8px; 
+    border-top-right-radius: 8px; 
+    max-height: 200px; 
+    object-fit: cover; 
 }
 
 
 /* Style des cartes des sites */
 .card-site {
 
-    border: 1px solid #ddd; /* Bordure grise */
-    border-radius: 8px; /* Coins arrondis */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    border: 1px solid #ddd; 
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
     height: 400px;
 }
 
 /* Style des images des sites */
 .card-site img {
-    border-top-left-radius: 8px; /* Coins arrondis en haut à gauche */
-    border-top-right-radius: 8px; /* Coins arrondis en haut à droite */
-    max-width: 100%; /* Image s'adapte à la largeur de la carte */
+    border-top-left-radius: 8px; 
+    border-top-right-radius: 8px; 
+    max-width: 100%; 
     
 }
 
 /* Style du titre des sites */
 .card-site .card-title {
-    font-size: 1.2rem; /* Taille de police */
-    font-weight: bold; /* Gras */
-    margin-bottom: 0.5rem; /* Marge inférieure */
+    font-size: 1.2rem; 
+    font-weight: bold; 
+    margin-bottom: 0.5rem; 
     
 }
 
 /* Style de la localisation des sites */
 .card-site .card-location {
-    color: rgb(159, 5, 5); /* Couleur de texte grise */
-    font-size: 0.9rem; /* Taille de police plus petite */
+    color: rgb(159, 5, 5); 
+    font-size: 0.9rem; 
 }
 
 
@@ -585,23 +591,21 @@ footer {
 
 h1, h2 {
     
-    text-align: center; /* Centrer le texte */
-    
-   
+    text-align: center; 
 }
 
 table {
     width: 100%;
     border-collapse: collapse;
     margin-bottom: 20px;
-    margin-left: auto; /* Auto-marge pour centrer horizontalement */
-    margin-right: auto; /* Auto-marge pour centrer horizontalement */
+    margin-left: auto; 
+    margin-right: auto; 
 }
 
 td, th {
     padding: 8px;
     border-bottom: 1px solid #ddd;
-    text-align: left; /* Aligner le texte à gauche */
+    text-align: left;
 }
 
 td:first-child {
@@ -619,7 +623,7 @@ td:first-child {
 
 /* Style spécifique pour les Jeux Olympiques de Paris 2024 */
 .paris2024 {
-    color: #0055A4; /* Bleu officiel de Paris 2024 */
+    color: #0055A4; 
     font-weight: bold;
 }
 
@@ -698,18 +702,18 @@ td:first-child {
         .reservation-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 250px auto; /* Réduit la marge pour centrer la table */
+            margin: 250px auto; 
         }
 
         .reservation-table th, .reservation-table td {
             border: 1px solid #ddd;
-            padding: 12px; /* Augmente la taille du padding pour plus d'espace */
-            text-align: center; /* Centre le texte */
+            padding: 12px; 
+            text-align: center; 
         }
 
         .reservation-table th {
-            background-color: #007bff; /* Change la couleur de fond de l'en-tête */
-            color: #fff; /* Change la couleur du texte de l'en-tête */
+            background-color: #007bff;
+            color: #fff; 
         }
 
         .reservation-table tr:hover {
@@ -719,21 +723,21 @@ td:first-child {
       /* Boutons */
 .btn {
     display: inline-block;
-    padding: 10px 16px; /* Taille du padding pour les boutons */
+    padding: 10px 16px; 
     text-align: center;
     text-decoration: none;
-    color: #5228a7; /* Couleur du texte */
+    color: #5228a7; 
     margin-left: 35px;
-    background-color: #fff; /* Couleur de fond */
+    background-color: #fff;
     border: none;
-    border-radius: 4px; /* Coins arrondis */
-    cursor: pointer; /* Curseur pointeur */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Transition pour une animation fluide */
+    border-radius: 4px; 
+    cursor: pointer; 
+    transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 .btn:hover {
-    background-color: #5228a7; /* Couleur de fond au survol */
-    color: #ffffff; /* Change la couleur du texte au survol */
+    background-color: #5228a7; 
+    color: #ffffff; 
 }
 
 
@@ -752,7 +756,7 @@ td:first-child {
         margin-top: 20px;
     }
     .payment-options img {
-        width: 50px; /* Ajustez la taille des images selon vos besoins */
+        width: 50px; 
         margin-right: 10px;
     }
 

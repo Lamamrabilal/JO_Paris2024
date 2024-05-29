@@ -23,7 +23,7 @@ urlpatterns = [
     path('connexion/', connexion, name='connexion'),
       
     path('compte_utilisateur/', profile, name='compte_utilisateur'),
-    path('deconnexion/', DeconnexionView.as_view(), name='deconnexion'),  # Ajout de la vue de déconnexion
+    path('deconnexion/', DeconnexionView.as_view(), name='deconnexion'),  
    
 
     path('reservation/',ReservationView.as_view(), name='reservation'),
