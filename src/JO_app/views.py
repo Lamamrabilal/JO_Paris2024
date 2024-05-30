@@ -392,7 +392,7 @@ class TicketDownloadView(View):
         info_style = ParagraphStyle(name='Info', fontSize=12, alignment=0)
         elements.append(Paragraph(f"<b>Nom:</b> {reservation.utilisateur.nom}", info_style))
         elements.append(Paragraph(f"<b>Prénom:</b> {reservation.utilisateur.prenom}", info_style))
-        elements.append(Paragraph(f"<b>Personnes Accompagnants:</b> {', '.join([user.nom if hasattr(user, 'nom') else user for user in reservation.noms_utilisateurs])}", info_style))
+        elements.append(Paragraph(f"<b>Accompagnants:</b> {', '.join([user.nom if hasattr(user, 'nom') else user for user in reservation.noms_utilisateurs])}", info_style))
         elements.append(Paragraph(f"<b>Événement:</b> {reservation.offre_de_billets.type}", info_style))
         elements.append(Paragraph(f"<b>Épreuve:</b> {reservation.offre_de_billets.sport}", info_style))
         elements.append(Paragraph(f"<b>Date:</b> {reservation.date_reservation.strftime('%d-%m-%Y')}", info_style))

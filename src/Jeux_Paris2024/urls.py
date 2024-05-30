@@ -7,7 +7,7 @@ from django.conf import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('JO_app/', include('JO_app.urls')),
-    path('oauth/', include('social_django.urls', namespace='social'))
+    
     
 ]
 if settings.DEBUG:
