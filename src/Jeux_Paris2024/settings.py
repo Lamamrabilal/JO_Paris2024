@@ -52,7 +52,7 @@ MIDDLEWARE = [
     'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
-ROOT_URLCONF = 'src.Jeux_Paris2024.urls'
+ROOT_URLCONF = 'Jeux_Paris2024.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'src.Jeux_Paris2024.wsgi.application'
+WSGI_APPLICATION = 'Jeux_Paris2024.wsgi.application'
 
 # Database
 DATABASES = {
