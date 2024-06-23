@@ -1,0 +1,103 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<div class="container-panier">
+    {% if user.is_authenticated %}
+        <p>Connecté en tant que {{ user.nom }}</p>
+       
+    {% endif %}
+    
+    <h2 class="panier-heading">Panier</h2>
+    {% if offres_du_panier %}
+        <ul class="list-group">
+            {% for offre in offres_du_panier %}
+                <li class="list-group-item">
+                    <!-- Ajouter la miniature de l'image du sport -->
+                    <img src="{% static offre.sport.image %}" alt="{{ offre.sport.name }}" style="max-width: 100px; max-height: 100px; float: left; margin-right: 10px;">
+                    <div>
+                        <strong>{{ offre.type }}</strong><br>
+                        {{ offre.description }}<br>
+                        <strong>Prix: {{ offre.prix }}</strong>
+                        <form action="{% url 'JO_app:supprimer_panier' offre_id=offre.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn-supprimer-du-panier" type="submit">Supprimer</button>
+                        </form>
+                    </div>
+                    <div style="clear: both;"></div>
+                </li>
+            {% endfor %}
+        </ul>
+        <!-- Synthèse de commande -->
+        <div class="summary">
+            <p>Total articles: {{ offres_du_panier|length }}</p>
+            <p>Total à payer: {{ total_prix }}</p>
+        </div>
+        <!-- Options de paiement -->
+        <div class="payment-options">
+            <h3>Choisissez votre moyen de paiement:</h3>
+            <img src="{% static 'visa.png' %}" alt="Visa">
+            <img src="{% static 'mastercard.png' %}" alt="Mastercard">
+            <img src="{% static 'paypal.png' %}" alt="PayPal">
+            
+        </div>
+        <!-- Formulaire de paiement -->
+        <form id="payment-form" action="{% url 'JO_app:paiement' %}" method="post">
+    {% csrf_token %}
+    {% for offre in offres_du_panier %}
+        {% if offre.type == 'Duo' %}
+            <div class="form-group">
+                <label>Nom utilisateur 1:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 1">
+            </div>
+            <div class="form-group">
+                <label>Nom utilisateur 2:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 2">
+            </div>
+        {% elif offre.type == 'Familiale' %}
+            <div class="form-group">
+                <label>Nom utilisateur 1:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 1">
+            </div>
+            <div class="form-group">
+                <label>Nom utilisateur 2:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 2">
+            </div>
+            <div class="form-group">
+                <label>Nom utilisateur 3:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 3">
+            </div>
+            <div class="form-group">
+                <label>Nom utilisateur 4:</label>
+                <input type="text" name="noms_utilisateurs" placeholder="Nom utilisateur 4">
+            </div>
+        {% endif %}
+    {% endfor %}
+    <button class="btn btn-primary" type="submit">COMMANDER</button>
+</form>
+
+    {% else %}
+        <p>Votre panier est vide.</p>
+    {% endif %}
+
+    <!-- Message demandant l'authentification avant le paiement -->
+    <div id="auth-message" style="display: none; color: red;">
+        Vous devez être connecté pour procéder au paiement. <a href="{% url 'JO_app:connexion' %}?next={% url 'JO_app:paiement' %}">Se connecter</a>
+    </div>
+</div>
+
+
+
+<!-- JavaScript pour gérer le paiement -->
+<script>
+    document.getElementById('payment-form').addEventListener('submit', function(event) {
+        
+        var isAuthenticated = "{{ user.is_authenticated }}";
+        if (isAuthenticated !== "True") {
+           
+            event.preventDefault();
+          
+            document.getElementById('auth-message').style.display = 'block';
+        }
+    });
+</script>
+{% endblock %}

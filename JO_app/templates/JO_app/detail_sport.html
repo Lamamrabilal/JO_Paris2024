@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    Détails du sport - {{ sport.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+       <div class="row justify-content-center mt-4">
+    <div class="col-md-6">
+        <div class="card mb-3">
+        
+            <img src="{% static  'images/paris_2024.png'%}">
+            <img src="{% static sport.image %}" class="card-img-top" alt="{{ sport.name }}">
+            
+            <div class="card-body">
+                <h5 class="card-title">{{ sport.name }}</h5>
+                <p class="card-text">{{ sport.description }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+        <div class="row">
+            {% for offre in sport.offres.all %}
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                           
+                            <img src="{% static sport.image %}" class="card-img-top" alt="{{ sport.name }}" style="max-width: 100px; max-height: 100px;">
+                            <h5 class="card-title">{{ offre.type }}</h5>
+                            <p class="card-text">{{ offre.description }}</p>
+                            <p class="card-text">Prix: {{ offre.prix }}€</p>
+                            <form action="{% url 'JO_app:ajouter_au_panier' offre.id %}" method="post">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-ajouter-au-panier">Ajouter au panier</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

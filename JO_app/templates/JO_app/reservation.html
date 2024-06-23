@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Page Principale{% endblock %}
+
+{% block content %}
+    <div class="container min-vh-100 d-flex justify-content-center align-items-center">
+        <div class="w-100 mt-5">
+            <h1 class="text-center mb-4 pt-5">Mes réservations</h1>
+            <div class="row">
+                {% for reservation in reservations %}
+                    <div class="col-md-4 mb-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">Réservation ID: {{ reservation.id }}</h5>
+                                <p class="card-text"><strong>Utilisateur:</strong> {{ reservation.utilisateur }}</p>
+                                
+                                {% if reservation.noms_utilisateurs %}
+                                    <ul class="list-unstyled">
+                                        {% for nom in reservation.noms_utilisateurs %}
+                                            <li>Utilisateur {{ forloop.counter }}: {{ nom }}</li>
+                                        {% endfor %}
+                                    </ul>
+                                {% else %}
+                                    <p class="text-danger">Noms des utilisateurs non fournis</p>
+                                {% endif %}
+                                
+                                <p class="card-text"><strong>Offres:</strong> {{ reservation.offre_de_billets }}</p>
+                                <p class="card-text"><strong>Date de réservation:</strong> {{ reservation.date_reservation }}</p>
+                                
+                                {% if reservation.ticket %}
+                                    <a href="{% url 'JO_app:ticket' reservation_id=reservation.id %}" class="btn btn-primary">Télécharger le billet</a>
+                                {% else %}
+                                    <p class="text-danger">Billet non disponible</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-12">
+                        <div class="alert alert-info" role="alert">
+                            Aucune réservation trouvée.
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
