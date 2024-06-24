@@ -28,7 +28,7 @@ from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Image
 
 class HomePageView(TemplateView):
-    template_name = 'home.html'
+    template_name = 'JO_app/home.html'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
