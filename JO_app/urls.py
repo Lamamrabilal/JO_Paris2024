@@ -9,6 +9,7 @@ from django.contrib.auth import views as auth_views
 app_name = "JO_app"
 
 urlpatterns = [
+     path('', HomePageView.as_view(), name='home'), 
     path('home/', HomePageView.as_view(), name='home'),
     
     path('sport/<int:pk>/', SportDetailView.as_view(), name='detail_sport'),
