@@ -381,7 +381,7 @@ class TicketDownloadView(View):
         elements.append(Spacer(1, 12))
 
         # Logo
-        logo_path = os.path.join(settings.STATIC_URL, '/Users/bilallamamra/Desktop/Jeux_olympique_Paris_2024/src/JO_app/static/images/photo_officielle.jpeg')
+        logo_path = os.path.join(settings.STATIC_ROOT, 'images/photo_officielle.jpeg')
         if not os.path.exists(logo_path):
             raise FileNotFoundError(f"Logo file not found: {logo_path}")
         logo = Image(logo_path, width=600, height=250)
