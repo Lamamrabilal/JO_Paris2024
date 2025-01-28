@@ -1,0 +1,40 @@
+2024-12-18 23:44:00.952 CET [37533] LOG:  starting PostgreSQL 15.10 (Homebrew) on aarch64-apple-darwin24.1.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-18 23:44:00.954 CET [37533] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-12-18 23:44:00.954 CET [37533] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-18 23:44:00.954 CET [37533] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-12-18 23:44:00.954 CET [37533] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-18 23:44:00.954 CET [37533] WARNING:  could not create listen socket for "localhost"
+2024-12-18 23:44:00.954 CET [37533] FATAL:  could not create any TCP/IP sockets
+2024-12-18 23:44:00.954 CET [37533] LOG:  database system is shut down
+2024-12-18 23:44:24.797 CET [37949] LOG:  starting PostgreSQL 15.10 (Homebrew) on aarch64-apple-darwin24.1.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-18 23:44:24.799 CET [37949] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-12-18 23:44:24.799 CET [37949] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-18 23:44:24.799 CET [37949] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-12-18 23:44:24.799 CET [37949] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-18 23:44:24.799 CET [37949] WARNING:  could not create listen socket for "localhost"
+2024-12-18 23:44:24.799 CET [37949] FATAL:  could not create any TCP/IP sockets
+2024-12-18 23:44:24.799 CET [37949] LOG:  database system is shut down
+2024-12-18 23:52:00.715 CET [45843] LOG:  starting PostgreSQL 15.10 (Homebrew) on aarch64-apple-darwin24.1.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-18 23:52:00.717 CET [45843] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-12-18 23:52:00.717 CET [45843] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-18 23:52:00.717 CET [45843] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-12-18 23:52:00.717 CET [45843] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-18 23:52:00.717 CET [45843] WARNING:  could not create listen socket for "localhost"
+2024-12-18 23:52:00.717 CET [45843] FATAL:  could not create any TCP/IP sockets
+2024-12-18 23:52:00.718 CET [45843] LOG:  database system is shut down
+2024-12-18 23:54:19.366 CET [47788] LOG:  starting PostgreSQL 15.10 (Homebrew) on aarch64-apple-darwin24.1.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-18 23:54:19.369 CET [47788] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-12-18 23:54:19.369 CET [47788] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-18 23:54:19.369 CET [47788] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-12-18 23:54:19.369 CET [47788] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-18 23:54:19.369 CET [47788] WARNING:  could not create listen socket for "localhost"
+2024-12-18 23:54:19.369 CET [47788] FATAL:  could not create any TCP/IP sockets
+2024-12-18 23:54:19.369 CET [47788] LOG:  database system is shut down
+2024-12-19 00:30:42.430 CET [5676] LOG:  starting PostgreSQL 15.10 (Homebrew) on aarch64-apple-darwin24.1.0, compiled by Apple clang version 16.0.0 (clang-1600.0.26.4), 64-bit
+2024-12-19 00:30:42.431 CET [5676] LOG:  could not bind IPv6 address "::1": Address already in use
+2024-12-19 00:30:42.431 CET [5676] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-19 00:30:42.431 CET [5676] LOG:  could not bind IPv4 address "127.0.0.1": Address already in use
+2024-12-19 00:30:42.431 CET [5676] HINT:  Is another postmaster already running on port 5432? If not, wait a few seconds and retry.
+2024-12-19 00:30:42.431 CET [5676] WARNING:  could not create listen socket for "localhost"
+2024-12-19 00:30:42.432 CET [5676] FATAL:  could not create any TCP/IP sockets
+2024-12-19 00:30:42.432 CET [5676] LOG:  database system is shut down
